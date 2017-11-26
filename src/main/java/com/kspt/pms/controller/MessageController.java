@@ -1,5 +1,6 @@
 package com.kspt.pms.controller;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import com.kspt.pms.repository.UserRepository;
 import com.kspt.pms.user.User;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by kivi on 26.11.17.
@@ -17,21 +19,29 @@ import java.util.Collection;
 @RequestMapping("{login}/messages")
 public class MessageController {
     @Autowired
+    Logger log;
+    @Autowired
     MessageRepository messageRepository;
     @Autowired
     UserRepository userRepository;
 
     @RequestMapping
     Collection<Message> getMessages(@PathVariable String login) {
+        log.debug("getMessages for user " + login);
         return messageRepository.findByOwnerLogin(login);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public void addMessage(@PathVariable String login, @RequestBody Message message) {
-        User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException(login));
-        message.setOwner(user);
-        messageRepository.save(message);
+        log.debug("addMessage " + message.toString() + " to user " + login);
+        Optional<User> user = userRepository.findByLogin(login);
+        if (user.isPresent()) {
+            message.setOwner(user.get());
+            messageRepository.save(message);
+        } else {
+            log.error("User " + login + "not found");
+            new UserNotFoundException(login);
+        }
     }
 }
 

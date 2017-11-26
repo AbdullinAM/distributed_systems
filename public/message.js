@@ -13,7 +13,7 @@ module.factory('Message', function ($resource) {
     }
 
     $scope.add = function () {
-        var message = Message();
+        var message = new Message();
         message.content = $scope.text;
         message.$save(url(), function () {
             $scope.text = "";
