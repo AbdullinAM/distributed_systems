@@ -1,5 +1,6 @@
 package com.kspt.pms.project;
 
+import com.kspt.pms.user.Role;
 import com.kspt.pms.user.User;
 
 import javax.persistence.*;
@@ -89,5 +90,13 @@ public class Project {
 
     public void setReports(Set<BugReport> reports) {
         this.reports = reports;
+    }
+
+    public Role getRoleForUser(User user) {
+        if (user.equals(manager)) return Role.MANAGER;
+        if (user.equals(teamLeader)) return Role.TEAMLEADER;
+        if (developers.contains(user)) return Role.DEVELOPER;
+        if (testers.contains(user)) return Role.TESTER;
+        return Role.NONE;
     }
 }

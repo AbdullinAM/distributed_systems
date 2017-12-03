@@ -122,4 +122,9 @@ public class Ticket {
         this.comments = comments;
     }
 
+    public boolean isNew()          { return status.equals(Status.NEW); }
+    public boolean isAccepted()     { return status.equals(Status.ACCEPTED); }
+    public boolean isInProgress()   { return status.equals(Status.IN_PROGRESS); }
+    public boolean isFinished()     { return status.equals(Status.FINISHED); }
+    public boolean isClosed()       { return status.equals(Status.CLOSED); }
 }

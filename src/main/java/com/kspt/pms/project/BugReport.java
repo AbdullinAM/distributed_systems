@@ -1,5 +1,7 @@
 package com.kspt.pms.project;
 
+import com.kspt.pms.exception.NoRightsException;
+import com.kspt.pms.user.Role;
 import com.kspt.pms.user.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -108,4 +110,9 @@ public class BugReport {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public boolean isOpened()   { return status.equals(Status.OPENED); }
+    public boolean isAccepted() { return status.equals(Status.ACCEPTED); }
+    public boolean isFixed()    { return status.equals(Status.FIXED); }
+    public boolean isClosed()   { return status.equals(Status.CLOSED); }
 }
