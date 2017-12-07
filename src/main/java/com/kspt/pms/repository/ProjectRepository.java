@@ -1,6 +1,6 @@
 package com.kspt.pms.repository;
 
-import com.kspt.pms.project.Project;
+import com.kspt.pms.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,9 +1,4 @@
-package com.kspt.pms.project;
-
-import com.kspt.pms.exception.NoRightsException;
-import com.kspt.pms.user.Role;
-import com.kspt.pms.user.User;
-import org.springframework.web.bind.annotation.CrossOrigin;
+package com.kspt.pms.entity;
 
 import javax.persistence.*;
 import java.util.Date;

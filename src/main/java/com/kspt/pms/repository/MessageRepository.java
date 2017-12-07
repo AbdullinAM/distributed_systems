@@ -1,7 +1,7 @@
 package com.kspt.pms.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.kspt.pms.project.Message;
+import com.kspt.pms.entity.Message;
 
 import javax.transaction.Transactional;
 import java.util.Collection;

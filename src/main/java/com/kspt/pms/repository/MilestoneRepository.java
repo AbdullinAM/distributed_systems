@@ -1,6 +1,6 @@
 package com.kspt.pms.repository;
 
-import com.kspt.pms.project.Milestone;
+import com.kspt.pms.entity.Milestone;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

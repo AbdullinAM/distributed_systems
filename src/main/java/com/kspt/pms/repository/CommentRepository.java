@@ -1,6 +1,6 @@
 package com.kspt.pms.repository;
 
-import com.kspt.pms.project.Comment;
+import com.kspt.pms.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

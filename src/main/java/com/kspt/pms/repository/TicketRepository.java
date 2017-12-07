@@ -1,6 +1,6 @@
 package com.kspt.pms.repository;
 
-import com.kspt.pms.project.Ticket;
+import com.kspt.pms.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

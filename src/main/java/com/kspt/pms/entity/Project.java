@@ -1,7 +1,4 @@
-package com.kspt.pms.project;
-
-import com.kspt.pms.user.Role;
-import com.kspt.pms.user.User;
+package com.kspt.pms.entity;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,7 +30,7 @@ public class Project {
     @ManyToMany(mappedBy = "testedProjects", fetch = FetchType.LAZY)
     private Set<User> testers = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entity")
     private Set<BugReport> reports = new HashSet<>();
 
     public Long getId() {

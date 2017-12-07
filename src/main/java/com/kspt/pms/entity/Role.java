@@ -1,4 +1,4 @@
-package com.kspt.pms.user;
+package com.kspt.pms.entity;
 
 /**
  * Created by kivi on 03.12.17.

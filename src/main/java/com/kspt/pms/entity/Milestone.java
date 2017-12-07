@@ -1,4 +1,4 @@
-package com.kspt.pms.project;
+package com.kspt.pms.entity;
 
 import javax.persistence.*;
 import java.util.Date;

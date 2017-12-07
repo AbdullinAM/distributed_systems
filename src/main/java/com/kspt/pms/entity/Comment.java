@@ -1,6 +1,4 @@
-package com.kspt.pms.project;
-
-import com.kspt.pms.user.User;
+package com.kspt.pms.entity;
 
 import javax.persistence.*;
 

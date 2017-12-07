@@ -1,6 +1,6 @@
 package com.kspt.pms.repository;
 
-import com.kspt.pms.project.BugReport;
+import com.kspt.pms.entity.BugReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

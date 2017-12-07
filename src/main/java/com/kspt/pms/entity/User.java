@@ -1,8 +1,8 @@
-package com.kspt.pms.user;
+package com.kspt.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kspt.pms.project.Message;
-import com.kspt.pms.project.Project;
+import com.kspt.pms.entity.Message;
+import com.kspt.pms.entity.Project;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class User {
     @JoinTable(
             name = "PROJECT_DEVELOPERS",
             joinColumns = { @JoinColumn(name = "user") },
-            inverseJoinColumns = { @JoinColumn(name = "project") }
+            inverseJoinColumns = { @JoinColumn(name = "entity") }
     )
     private Set<Project> developedProjects = new HashSet<>();
 
@@ -57,7 +57,7 @@ public class User {
     @JoinTable(
             name = "PROJECT_TESTERS",
             joinColumns = { @JoinColumn(name = "user") },
-            inverseJoinColumns = { @JoinColumn(name = "project") }
+            inverseJoinColumns = { @JoinColumn(name = "entity") }
     )
     private Set<Project> testedProjects = new HashSet<>();
 

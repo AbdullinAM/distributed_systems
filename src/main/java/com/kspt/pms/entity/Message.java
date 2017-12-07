@@ -1,7 +1,7 @@
-package com.kspt.pms.project;
+package com.kspt.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kspt.pms.user.User;
+import com.kspt.pms.entity.User;
 
 import javax.persistence.*;
 

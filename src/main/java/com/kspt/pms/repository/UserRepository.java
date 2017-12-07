@@ -1,7 +1,7 @@
 package com.kspt.pms.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.kspt.pms.user.User;
+import com.kspt.pms.entity.User;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
