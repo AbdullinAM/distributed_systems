@@ -30,7 +30,7 @@ public class Project {
     @ManyToMany(mappedBy = "testedProjects", fetch = FetchType.LAZY)
     private Set<User> testers = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "entity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private Set<BugReport> reports = new HashSet<>();
 
     public Long getId() {

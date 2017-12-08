@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping({"{login}"})
 public class UserController {
-//    @Autowired
-//    UserRepository userRepository;
-//
-//    @RequestMapping
-//    public User getUser(@PathVariable String login) {
-//        return userRepository.findByLogin(login)
-//                .orElseThrow(() -> new UserNotFoundException(login));
-//    }
-//
-//    @RequestMapping(method = RequestMethod.POST)
-//    public void addUser(@PathVariable String login, @RequestBody User user) {
-//        userRepository.save(user);
-//    }
+    @Autowired
+    UserRepository userRepository;
+
+    @RequestMapping
+    public User getUser(@PathVariable String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException(login));
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void addUser(@PathVariable String login, @RequestBody User user) {
+        userRepository.save(user);
+    }
 }
