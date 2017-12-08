@@ -1,5 +1,6 @@
 package com.kspt.pms;
 
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,7 +32,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("com.kspt.pms")
 @PropertySource(value = { "classpath:application.properties" })
-@EnableJpaRepositories(basePackages="com.kspt.pms.repository")
+@EnableJpaRepositories(basePackages="com.kspt.pms")
 public class AppConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -83,10 +84,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.kspt.pms.repository");
+        factory.setPackagesToScan("com.kspt.pms");
         factory.setDataSource(dataSource());
+        factory.setPersistenceUnitName("my-pms");
+        factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         factory.afterPropertiesSet();
-
         return factory.getObject();
     }
 
