@@ -1,0 +1,9 @@
+<div>
+    <p>Id is {{user.instance.id}}</p>
+    <p>Login is {{user.instance.login}}</p>
+    <p>Name is {{user.instance.name}}</p>
+
+    <div ng-repeat="message in user.messages" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+        <p>{{message.id}} : {{message.content}}</p>
+    </div>
+</div>

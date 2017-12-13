@@ -14,8 +14,4 @@ public class MainController {
         return "homepage";
     }
 
-    @RequestMapping("/helloPage")
-    public String helloPage() {
-        return "helloPage";
-    }
 }
