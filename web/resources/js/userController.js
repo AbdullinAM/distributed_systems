@@ -15,7 +15,7 @@ function UserController($routeParams, UserService, MessageService) {
         return {login:$routeParams.login}
     }
 
-    this.instance = new UserService(url());
+    this.instance = UserService.get(url());
     this.messages = MessageService.query(url());
 }
 

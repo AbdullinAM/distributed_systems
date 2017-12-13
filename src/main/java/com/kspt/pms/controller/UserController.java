@@ -20,17 +20,22 @@ public class UserController {
     @Autowired
     MessageRepository messageRepository;
 
-    @RequestMapping({"rest/{login}"})
+    @RequestMapping("rest/{login}")
     public User getUser(@PathVariable String login) {
-        System.out.println("Find by login: " + login);
-        User user = userRepository.findByLogin(login)
+        return userRepository.findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException(login));
-        System.out.println(user.getName());
-        return user;
     }
 
-    @RequestMapping({"rest/{login}/messages"})
+    @RequestMapping("rest/{login}/messages")
     public Collection<Message> getMessages(@PathVariable String login) {
         return messageRepository.findByOwnerLogin(login);
+    }
+
+    @RequestMapping(value = "rest/{login}/messages", method = RequestMethod.POST)
+    public void addMessage(@PathVariable String login, @RequestBody Message message) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException(login));
+        message.setOwner(user);
+        messageRepository.save(message);
     }
 }
