@@ -1,6 +1,5 @@
 package com.kspt.pms.logic;
 
-import com.kspt.pms.entity.BugReport;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.repository.BugReportRepository;
 import com.kspt.pms.repository.CommentRepository;
@@ -11,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by kivi on 14.12.17.
  */
-public class TeamLeader implements ReportCreator, ReportDeveloper, TicketManager, TicketDeveloper {
+public class Tester implements ReportCreator, ReportManager {
 
     private User user;
-    @Autowired
-    TicketRepository ticketRepository;
     @Autowired
     BugReportRepository bugReportRepository;
     @Autowired
@@ -23,7 +20,7 @@ public class TeamLeader implements ReportCreator, ReportDeveloper, TicketManager
     @Autowired
     MessageRepository messageRepository;
 
-    public TeamLeader(User user) {
+    public Tester(User user) {
         this.user = user;
     }
 
@@ -40,11 +37,6 @@ public class TeamLeader implements ReportCreator, ReportDeveloper, TicketManager
     @Override
     public MessageRepository getMessageRepository() {
         return messageRepository;
-    }
-
-    @Override
-    public TicketRepository getTicketRepository() {
-        return ticketRepository;
     }
 
     @Override
