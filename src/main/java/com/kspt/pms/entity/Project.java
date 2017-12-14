@@ -24,11 +24,26 @@ public class Project {
     @ManyToOne
     private User teamLeader;
 
-    @ManyToMany(mappedBy = "developedProjects", fetch = FetchType.LAZY)
+    //@ManyToMany(mappedBy = "developedProjects", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "PROJECT_DEVELOPERS",
+            joinColumns = { @JoinColumn(name = "entity") },
+            inverseJoinColumns = { @JoinColumn(name = "user") }
+    )
     private Set<User> developers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "testedProjects", fetch = FetchType.LAZY)
+    //@ManyToMany(mappedBy = "testedProjects", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "PROJECT_TESTERS",
+            joinColumns = { @JoinColumn(name = "entity") },
+            inverseJoinColumns = { @JoinColumn(name = "user") }
+    )
     private Set<User> testers = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    private Set<Milestone> milestones = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private Set<BugReport> reports = new HashSet<>();
@@ -95,5 +110,25 @@ public class Project {
         if (developers.contains(user)) return Role.DEVELOPER;
         if (testers.contains(user)) return Role.TESTER;
         return Role.NONE;
+    }
+
+    public Set<Milestone> getMilestones() {
+        return milestones;
+    }
+
+    public void setMilestones(Set<Milestone> milestones) {
+        this.milestones = milestones;
+    }
+
+    public void addDeveloper(User developer) {
+        developers.add(developer);
+    }
+
+    public void removeDeveloper(User developer) {
+        developers.remove(developer);
+    }
+
+    public void addTester(User tester) {
+        testers.add(tester);
     }
 }

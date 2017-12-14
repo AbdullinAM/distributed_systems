@@ -35,32 +35,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
     private List<Message> messages = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    private Set<Project> managedProjects = new HashSet<>();
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teamLeader")
-    private Set<Project> leadedProjects = new HashSet<>();
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "PROJECT_DEVELOPERS",
-            joinColumns = { @JoinColumn(name = "user") },
-            inverseJoinColumns = { @JoinColumn(name = "entity") }
-    )
-    private Set<Project> developedProjects = new HashSet<>();
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "PROJECT_TESTERS",
-            joinColumns = { @JoinColumn(name = "user") },
-            inverseJoinColumns = { @JoinColumn(name = "entity") }
-    )
-    private Set<Project> testedProjects = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -99,21 +73,5 @@ public class User {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
-    }
-
-    public Set<Project> getManagedProjects() {
-        return managedProjects;
-    }
-
-    public void setManagedProjects(Set<Project> managedProjects) {
-        this.managedProjects = managedProjects;
-    }
-
-    public Set<Project> getLeadedProjects() {
-        return leadedProjects;
-    }
-
-    public void setLeadedProjects(Set<Project> leadedProjects) {
-        this.leadedProjects = leadedProjects;
     }
 }

@@ -1,7 +1,13 @@
 package com.kspt.pms.entity;
 
+import com.kspt.pms.exception.MilestoneTicketNotClosedException;
+import com.kspt.pms.exception.TwoActiveMilestonesException;
+import com.kspt.pms.exception.WrongStatusException;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by kivi on 03.12.17.
@@ -99,6 +105,9 @@ public class Milestone {
     @Temporal(TemporalType.TIMESTAMP)
     private Date closingDate;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    private Set<Ticket> tickets = new HashSet<>();
+
     @Override
     public int hashCode() {return project.hashCode() + startingDate.hashCode() + endingDate.hashCode();}
     @Override
@@ -113,4 +122,25 @@ public class Milestone {
     public boolean isOpened() { return status.equals(Status.OPENED); }
     public boolean isActive() { return status.equals(Status.ACTIVE); }
     public boolean isClosed() { return status.equals(Status.CLOSED); }
+
+    public void setActive() throws TwoActiveMilestonesException, WrongStatusException {
+        if (isActive()) return;
+        if (!isOpened()) throw new WrongStatusException(getStatus().name(), Status.ACTIVE.name());
+
+        for (Milestone milestone : project.getMilestones()) {
+            if (milestone.isActive()) throw new TwoActiveMilestonesException(milestone.getId(), this.getId());
+        }
+
+        status = Status.ACTIVE;
+        activatedDate = new Date();
+    }
+
+    public void setClosed() throws MilestoneTicketNotClosedException, WrongStatusException {
+        if (isClosed()) return;
+        if (!isActive()) throw new WrongStatusException(getStatus().name(), Status.CLOSED.name());
+        for (Ticket t : tickets)
+            if (!t.isClosed()) throw new MilestoneTicketNotClosedException(t.getId());
+        closingDate = new Date();
+        status = Status.CLOSED;
+    }
 }
