@@ -2,6 +2,7 @@ package com.kspt.pms.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,7 +31,7 @@ public class Ticket {
     private User creator;
 
     @Column(name = "STATUS")
-    private Status status;
+    private Status status = Status.NEW;
 
     @ManyToMany
     @JoinTable(
@@ -38,11 +39,11 @@ public class Ticket {
             joinColumns = { @JoinColumn(name = "ticket") },
             inverseJoinColumns = { @JoinColumn(name = "user") }
     )
-    private Set<User> assignees;
+    private Set<User> assignees = new HashSet<>();
 
     @Column(name = "CREATION_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationTime;
+    private Date creationTime = new Date();
 
     @Column(name = "TASK")
     private String task;
@@ -125,4 +126,32 @@ public class Ticket {
     public boolean isInProgress()   { return status.equals(Status.IN_PROGRESS); }
     public boolean isFinished()     { return status.equals(Status.FINISHED); }
     public boolean isClosed()       { return status.equals(Status.CLOSED); }
+
+    public void addAssignee(User user) {
+        assignees.add(user);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void setNew() {
+        status = Status.NEW;
+    }
+
+    public void setAccepted() {
+        status = Status.ACCEPTED;
+    }
+
+    public void setInProgress() {
+        status = Status.IN_PROGRESS;
+    }
+
+    public void setFinished() {
+        status = Status.FINISHED;
+    }
+
+    public void setClosed() {
+        status = Status.CLOSED;
+    }
 }

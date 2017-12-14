@@ -33,11 +33,11 @@ public class BugReport {
     private User developer;
 
     @Column(name = "STATUS")
-    private Status status;
+    private Status status = Status.OPENED;
 
     @Column(name = "CREATION_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creationTime;
+    private Date creationTime = new Date();
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -110,4 +110,24 @@ public class BugReport {
     public boolean isAccepted() { return status.equals(Status.ACCEPTED); }
     public boolean isFixed()    { return status.equals(Status.FIXED); }
     public boolean isClosed()   { return status.equals(Status.CLOSED); }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void setReopened() {
+        status = Status.OPENED;
+    }
+
+    public void setAccepted() {
+        status = Status.ACCEPTED;
+    }
+
+    public void setFixed() {
+        status = Status.FIXED;
+    }
+
+    public void setClosed() {
+        status = Status.CLOSED;
+    }
 }
