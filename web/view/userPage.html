@@ -1,9 +1,75 @@
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    /* Create two unequal columns that floats next to each other */
+    .column {
+        float: left;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    .left {
+        width: 75%;
+    }
+
+    .right {
+        width: 25%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+
 <div>
     <p>Id is {{user.instance.id}}</p>
     <p>Login is {{user.instance.login}}</p>
     <p>Name is {{user.instance.name}}</p>
 
-    <div ng-repeat="message in user.messages" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-        <p>{{message.id}} : {{message.content}}</p>
+    <div class="row">
+        <div class="column left">
+            <div ng-if="user.managedProjects.length != 0">
+                <p>Managed Projects:</p>
+                <div ng-repeat="it in user.managedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.id}} : {{it.name}}</p>
+                </div>
+            </div>
+
+            <div ng-if="user.leadedProjects.length != 0">
+            <p>Leaded Projects:</p>
+            <div ng-repeat="it in user.leadedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                <p>{{it.id}} : {{it.name}}</p>
+            </div>
+            </div>
+
+            <div ng-if="user.developedProjects.length != 0">
+                <p>Developed Projects:</p>
+                <div ng-repeat="it in user.developedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.id}} : {{it.name}}</p>
+                </div>
+            </div>
+
+            <div ng-if="user.testedProjects.length != 0">
+                <p>Tested Projects:</p>
+                <div ng-repeat="it in user.testedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.id}} : {{it.name}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="column right">
+            <p>Messages:</p>
+            <div ng-repeat="message in user.messages" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                <p>{{message.id}} : {{message.content}}</p>
+            </div>
+        </div>
     </div>
 </div>

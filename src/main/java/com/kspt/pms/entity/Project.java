@@ -1,5 +1,7 @@
 package com.kspt.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +27,7 @@ public class Project {
     private User teamLeader;
 
     //@ManyToMany(mappedBy = "developedProjects", fetch = FetchType.LAZY)
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "PROJECT_DEVELOPERS",
@@ -33,6 +36,7 @@ public class Project {
     )
     private Set<User> developers = new HashSet<>();
 
+    @JsonIgnore
     //@ManyToMany(mappedBy = "testedProjects", fetch = FetchType.LAZY)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -42,9 +46,11 @@ public class Project {
     )
     private Set<User> testers = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private Set<Milestone> milestones = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private Set<BugReport> reports = new HashSet<>();
 
