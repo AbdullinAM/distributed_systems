@@ -2,7 +2,6 @@ package com.kspt.pms.controller;
 
 import com.kspt.pms.entity.Message;
 import com.kspt.pms.entity.Project;
-import com.kspt.pms.entity.Role;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.UnknownRequestParamValueException;
 import com.kspt.pms.exception.UserNotFoundException;
@@ -12,10 +11,8 @@ import com.kspt.pms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Created by kivi on 03.12.17.
@@ -51,16 +48,22 @@ public class UserController {
     @RequestMapping("rest/{login}/projects")
     public Collection<Project> getProjects(@PathVariable String login,
                                            @RequestParam("type") String type) {
-        System.out.println("Resuest param: " + type);
         Collection<Project> result;
         switch (type) {
             case "manager": result = projectRepository.findByManagerLogin(login); break;
             case "teamlead": result = projectRepository.findByTeamLeaderLogin(login); break;
-            case "dev": result = projectRepository.findByDevelopersContaining(login); break;
-            case "tester": result = projectRepository.findByTestersContaining(login); break;
+            case "dev": result = new ArrayList<>(); break;
+            case "tester": result = new ArrayList<>(); break;
             default: throw new UnknownRequestParamValueException("type", type);
         }
-        System.out.println("Result size: " + result.size());
         return result;
+    }
+
+    @RequestMapping(value = "rest/{login}/projects", method = RequestMethod.POST)
+    public void createProject(@PathVariable String login, @RequestBody Project project) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException(login));
+        project.setManager(user);
+        projectRepository.save(project);
     }
 }
