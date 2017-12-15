@@ -41,31 +41,32 @@
             <div ng-if="user.managedProjects.length != 0">
                 <p>Managed Projects:</p>
                 <div ng-repeat="it in user.managedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.id}} : {{it.name}}</p>
+                    <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
                 </div>
             </div>
 
             <div ng-if="user.leadedProjects.length != 0">
-            <p>Leaded Projects:</p>
-            <div ng-repeat="it in user.leadedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                <p>{{it.id}} : {{it.name}}</p>
-            </div>
+                <p>Leaded Projects:</p>
+                <div ng-repeat="it in user.leadedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
+                </div>
             </div>
 
             <div ng-if="user.developedProjects.length != 0">
                 <p>Developed Projects:</p>
                 <div ng-repeat="it in user.developedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.id}} : {{it.name}}</p>
+                    <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
                 </div>
             </div>
 
             <div ng-if="user.testedProjects.length != 0">
                 <p>Tested Projects:</p>
                 <div ng-repeat="it in user.testedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.id}} : {{it.name}}</p>
+                    <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
                 </div>
             </div>
         </div>
+
         <div class="column right">
             <p>Messages:</p>
             <div ng-repeat="message in user.messages" style="background: #EEE; border: solid; margin: 10px; width: 300px;">

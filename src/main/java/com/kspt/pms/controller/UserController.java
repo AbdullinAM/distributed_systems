@@ -26,6 +26,14 @@ public class UserController {
     @Autowired
     ProjectRepository projectRepository;
 
+    @RequestMapping("rest/{login}/authenticate")
+    public boolean authenticate(@PathVariable String login,
+                                @RequestParam("passwd") String passwd) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException(login));
+        return user.getPassword().equals(passwd);
+    }
+
     @RequestMapping("rest/{login}")
     public User getUser(@PathVariable String login) {
         return userRepository.findByLogin(login)

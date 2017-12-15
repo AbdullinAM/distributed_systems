@@ -17,10 +17,10 @@ function UserProjectService($resource) {
 function UserController($scope, $routeParams, UserService, MessageService, UserProjectService) {
     var url = function () {
         return {login:$routeParams.login}
-    }
+    };
     var project_url = function (proj_type) {
         return {login:$routeParams.login, type: proj_type};
-    }
+    };
 
     this.instance = UserService.get(url());
     this.messages = MessageService.query(url());
