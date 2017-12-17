@@ -4,7 +4,7 @@ import com.kspt.pms.entity.Message;
 import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.UnknownRequestParamValueException;
-import com.kspt.pms.exception.UserNotFoundException;
+import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.repository.MessageRepository;
 import com.kspt.pms.repository.ProjectRepository;
 import com.kspt.pms.repository.UserRepository;
@@ -30,14 +30,20 @@ public class UserController {
     public String authenticate(@PathVariable String login,
                                @RequestParam("passwd") String passwd) {
         User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException(login));
+                .orElseThrow(() -> new NotFoundException(login));
         return Boolean.toString(user.getPassword().equals(passwd));
     }
 
     @RequestMapping("rest/{login}")
     public User getUser(@PathVariable String login) {
         return userRepository.findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException(login));
+                .orElseThrow(() -> new NotFoundException(login));
+    }
+
+    @RequestMapping(value = "rest/{login}", method = RequestMethod.POST)
+    public void addUser(@PathVariable String login, @RequestBody User user) {
+        System.out.println("Saving user: " + user.getName() + " " + user.getLogin());
+        userRepository.save(user);
     }
 
     @RequestMapping("rest/{login}/messages")
@@ -48,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "rest/{login}/messages", method = RequestMethod.POST)
     public void addMessage(@PathVariable String login, @RequestBody Message message) {
         User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException(login));
+                .orElseThrow(() -> new NotFoundException(login));
         message.setOwner(user);
         messageRepository.save(message);
     }
@@ -70,7 +76,7 @@ public class UserController {
     @RequestMapping(value = "rest/{login}/projects", method = RequestMethod.POST)
     public void createProject(@PathVariable String login, @RequestBody Project project) {
         User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException(login));
+                .orElseThrow(() -> new NotFoundException(login));
         project.setManager(user);
         projectRepository.save(project);
     }

@@ -10,8 +10,8 @@ import java.util.function.Supplier;
  */
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String login) {
-        super("could not find user with login: " + login);
+public class NotFoundException extends RuntimeException {
+    public NotFoundException(String name) {
+        super("could not find object with name: " + name);
     }
 }
