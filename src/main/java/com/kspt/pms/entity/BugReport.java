@@ -1,5 +1,7 @@
 package com.kspt.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -11,18 +13,12 @@ import java.util.Set;
 @Table(name = "BUGREPORT")
 public class BugReport {
 
-    public enum Status {
-        OPENED,
-        ACCEPTED,
-        FIXED,
-        CLOSED
-    }
-
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     private Project project;
 
@@ -33,7 +29,8 @@ public class BugReport {
     private User developer;
 
     @Column(name = "STATUS")
-    private Status status = Status.OPENED;
+    @Enumerated(EnumType.STRING)
+    private ReportStatus status = ReportStatus.OPENED;
 
     @Column(name = "CREATION_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
@@ -42,6 +39,7 @@ public class BugReport {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @JsonIgnore
     @OneToMany
     @JoinTable(
             name = "BUGREPORT_COMMENTS",
@@ -82,11 +80,11 @@ public class BugReport {
         this.developer = developer;
     }
 
-    public Status getStatus() {
+    public ReportStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ReportStatus status) {
         this.status = status;
     }
 
@@ -106,28 +104,28 @@ public class BugReport {
         this.description = description;
     }
 
-    public boolean isOpened()   { return status.equals(Status.OPENED); }
-    public boolean isAccepted() { return status.equals(Status.ACCEPTED); }
-    public boolean isFixed()    { return status.equals(Status.FIXED); }
-    public boolean isClosed()   { return status.equals(Status.CLOSED); }
+    public boolean isOpened()   { return status.equals(ReportStatus.OPENED); }
+    public boolean isAccepted() { return status.equals(ReportStatus.ACCEPTED); }
+    public boolean isFixed()    { return status.equals(ReportStatus.FIXED); }
+    public boolean isClosed()   { return status.equals(ReportStatus.CLOSED); }
 
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
     public void setReopened() {
-        status = Status.OPENED;
+        status = ReportStatus.OPENED;
     }
 
     public void setAccepted() {
-        status = Status.ACCEPTED;
+        status = ReportStatus.ACCEPTED;
     }
 
     public void setFixed() {
-        status = Status.FIXED;
+        status = ReportStatus.FIXED;
     }
 
     public void setClosed() {
-        status = Status.CLOSED;
+        status = ReportStatus.CLOSED;
     }
 }

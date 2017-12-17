@@ -4,6 +4,43 @@
     <title>Title</title>
 </head>
 
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    /* Create two unequal columns that floats next to each other */
+    .column {
+        float: left;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    .left {
+        width: 75%;
+    }
+
+    .right {
+        width: 25%;
+    }
+
+    .equal {
+        width: 50%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>
+
+
 <body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
@@ -13,6 +50,7 @@
 <script src="resources/js/loginController.js"></script>
 <script src="resources/js/userController.js"></script>
 <script src="resources/js/projectController.js"></script>
+
 <div ng-view></div>
 </body>
 </html>

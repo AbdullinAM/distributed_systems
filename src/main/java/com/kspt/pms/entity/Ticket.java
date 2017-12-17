@@ -11,13 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "TICKET")
 public class Ticket {
-    public enum Status {
-        NEW,
-        ACCEPTED,
-        IN_PROGRESS,
-        FINISHED,
-        CLOSED
-    }
 
     @Id
     @GeneratedValue
@@ -31,7 +24,8 @@ public class Ticket {
     private User creator;
 
     @Column(name = "STATUS")
-    private Status status = Status.NEW;
+    @Enumerated(EnumType.STRING)
+    private TicketStatus status = TicketStatus.NEW;
 
     @ManyToMany
     @JoinTable(
@@ -81,11 +75,11 @@ public class Ticket {
         this.creator = creator;
     }
 
-    public Status getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(TicketStatus status) {
         this.status = status;
     }
 
@@ -121,11 +115,11 @@ public class Ticket {
         this.comments = comments;
     }
 
-    public boolean isNew()          { return status.equals(Status.NEW); }
-    public boolean isAccepted()     { return status.equals(Status.ACCEPTED); }
-    public boolean isInProgress()   { return status.equals(Status.IN_PROGRESS); }
-    public boolean isFinished()     { return status.equals(Status.FINISHED); }
-    public boolean isClosed()       { return status.equals(Status.CLOSED); }
+    public boolean isNew()          { return status.equals(TicketStatus.NEW); }
+    public boolean isAccepted()     { return status.equals(TicketStatus.ACCEPTED); }
+    public boolean isInProgress()   { return status.equals(TicketStatus.IN_PROGRESS); }
+    public boolean isFinished()     { return status.equals(TicketStatus.FINISHED); }
+    public boolean isClosed()       { return status.equals(TicketStatus.CLOSED); }
 
     public void addAssignee(User user) {
         assignees.add(user);
@@ -136,22 +130,22 @@ public class Ticket {
     }
 
     public void setNew() {
-        status = Status.NEW;
+        status = TicketStatus.NEW;
     }
 
     public void setAccepted() {
-        status = Status.ACCEPTED;
+        status = TicketStatus.ACCEPTED;
     }
 
     public void setInProgress() {
-        status = Status.IN_PROGRESS;
+        status = TicketStatus.IN_PROGRESS;
     }
 
     public void setFinished() {
-        status = Status.FINISHED;
+        status = TicketStatus.FINISHED;
     }
 
     public void setClosed() {
-        status = Status.CLOSED;
+        status = TicketStatus.CLOSED;
     }
 }

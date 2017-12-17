@@ -1,4 +1,33 @@
 <div>
-    user {{project.user.login}}
-    showing project {{project.name}}
+    <p>Id: {{project.instance.id}}</p>
+    <p>Project: {{project.instance.name}}</p>
+    <p>Manager: {{project.instance.manager.login}}</p>
+    <p>Team leader: {{project.instance.teamleader.name}}</p>
+
+
+    <div class="row">
+        <div class="column equal">
+            <div ng-if="project.milestones.length != 0">
+                <p>Milestones:</p>
+                <div ng-repeat="it in project.milestones" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.id}} : {{it.description}}</p>
+                </div>
+            </div>
+            <p>Start time: <input type="date" ng-model="startTime"></p>
+            <p>End time: <input type="date" ng-model="endTime"></p>
+            <p><button ng-click="project.addMilestone()">Add milestone</button></p>
+        </div>
+
+        <div class="column equal">
+            <div ng-if="project.reports.length != 0">
+                <p>Bug reports:</p>
+                <div ng-repeat="it in project.reports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.id}} : {{it.description}}</p>
+                </div>
+            </div>
+            <textarea rows="10" cols="50" ng-model="reportDesc"></textarea>
+            <button ng-click="project.addReport()">Add message</button>
+        </div>
+    </div>
+
 </div>

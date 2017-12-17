@@ -3,30 +3,18 @@
  */
 
 function UserService($resource) {
-    return $resource('rest/:login', { login: '@login' });
+    return $resource('rest/user/:login', { login: '@login' });
 }
 
 function MessageService($resource) {
-    return $resource('rest/:login/messages', { login: '@login' });
+    return $resource('rest/user/:login/messages', { login: '@login' });
 }
 
 function UserProjectService($resource) {
-    return $resource('rest/:login/projects?type=:type', {login: '@login', type: '@type'});
+    return $resource('rest/user/:login/projects?type=:type', {login: '@login', type: '@type'});
 }
 
-function UserShareService() {
-    var user = {};
-    return {
-        setUser: function (value) {
-            user = value;
-        },
-        getUser: function () {
-            return user;
-        }
-    };
-}
-
-function UserController($scope, $routeParams, UserService, MessageService, UserProjectService, UserShareService) {
+function UserController($scope, $routeParams, UserService, MessageService, UserProjectService) {
     var url = function () {
         return {login:$routeParams.login}
     };
@@ -41,15 +29,13 @@ function UserController($scope, $routeParams, UserService, MessageService, UserP
     this.developedProjects = UserProjectService.query(project_url("dev"));
     this.testedProjects = UserProjectService.query(project_url("tester"));
 
-    UserShareService.setUser(this.instance);
-
     this.updateProjects = function () {
         this.managedProjects = UserProjectService.query(project_url("manager"));
     }.bind(this);
 
     this.createProject = function () {
         if ($scope.projectName) {
-            var project = new UserProjectService();
+            var project = new UserProjectService(project_url("manager"));
             project.name = $scope.projectName;
             project.$save(url(), function () {
                 $scope.projectName = "";

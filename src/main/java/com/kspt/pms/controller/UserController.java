@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     ProjectRepository projectRepository;
 
-    @RequestMapping("rest/{login}/authenticate")
+    @RequestMapping("rest/user/{login}/authenticate")
     public String authenticate(@PathVariable String login,
                                @RequestParam("passwd") String passwd) {
         User user = userRepository.findByLogin(login)
@@ -34,24 +34,23 @@ public class UserController {
         return Boolean.toString(user.getPassword().equals(passwd));
     }
 
-    @RequestMapping("rest/{login}")
+    @RequestMapping("rest/user/{login}")
     public User getUser(@PathVariable String login) {
         return userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
     }
 
-    @RequestMapping(value = "rest/{login}", method = RequestMethod.POST)
+    @RequestMapping(value = "rest/user/{login}", method = RequestMethod.POST)
     public void addUser(@PathVariable String login, @RequestBody User user) {
-        System.out.println("Saving user: " + user.getName() + " " + user.getLogin());
         userRepository.save(user);
     }
 
-    @RequestMapping("rest/{login}/messages")
+    @RequestMapping("rest/user/{login}/messages")
     public Collection<Message> getMessages(@PathVariable String login) {
         return messageRepository.findByOwnerLogin(login);
     }
 
-    @RequestMapping(value = "rest/{login}/messages", method = RequestMethod.POST)
+    @RequestMapping(value = "rest/user/{login}/messages", method = RequestMethod.POST)
     public void addMessage(@PathVariable String login, @RequestBody Message message) {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
@@ -59,7 +58,7 @@ public class UserController {
         messageRepository.save(message);
     }
 
-    @RequestMapping("rest/{login}/projects")
+    @RequestMapping("rest/user/{login}/projects")
     public Collection<Project> getProjects(@PathVariable String login,
                                            @RequestParam("type") String type) {
         Collection<Project> result;
@@ -73,7 +72,7 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping(value = "rest/{login}/projects", method = RequestMethod.POST)
+    @RequestMapping(value = "rest/user/{login}/projects", method = RequestMethod.POST)
     public void createProject(@PathVariable String login, @RequestBody Project project) {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));

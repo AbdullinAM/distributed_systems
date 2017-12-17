@@ -3,6 +3,7 @@ package com.kspt.pms.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import java.util.Set;
  * Created by kivi on 03.12.17.
  */
 @Entity
+@Transactional
 @Table(name = "PROJECT")
 public class Project {
     @Id
@@ -28,7 +30,7 @@ public class Project {
 
     //@ManyToMany(mappedBy = "developedProjects", fetch = FetchType.LAZY)
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "PROJECT_DEVELOPERS",
             joinColumns = { @JoinColumn(name = "entity") },
@@ -38,7 +40,7 @@ public class Project {
 
     @JsonIgnore
     //@ManyToMany(mappedBy = "testedProjects", fetch = FetchType.LAZY)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "PROJECT_TESTERS",
             joinColumns = { @JoinColumn(name = "entity") },
@@ -47,11 +49,11 @@ public class Project {
     private Set<User> testers = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
     private Set<Milestone> milestones = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
     private Set<BugReport> reports = new HashSet<>();
 
     public Long getId() {

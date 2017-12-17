@@ -10,6 +10,7 @@ import com.kspt.pms.repository.MessageRepository;
 import com.kspt.pms.repository.MilestoneRepository;
 import com.kspt.pms.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Set;
@@ -20,17 +21,18 @@ import java.util.Set;
 public class Manager implements TicketManager {
 
     private User user;
-    @Autowired
     MilestoneRepository milestoneRepository;
-    @Autowired
     TicketRepository ticketRepository;
-    @Autowired
     CommentRepository commentRepository;
-    @Autowired
     MessageRepository messageRepository;
 
-    public Manager(User user) {
+    public Manager(User user, MilestoneRepository milestoneRepository, TicketRepository ticketRepository,
+                   CommentRepository commentRepository, MessageRepository messageRepository) {
         this.user = user;
+        this.milestoneRepository = milestoneRepository;
+        this.ticketRepository = ticketRepository;
+        this.commentRepository = commentRepository;
+        this.messageRepository = messageRepository;
     }
 
     public Milestone createMilestone(Project project, Date start, Date end) throws NoRightsException {

@@ -55,22 +55,22 @@ public class Permissions {
     }
 
     public static Permissions getManagerPermissions() {
-        Long permissions = USER_MANAGER & MILESTONE_MANAGER & TICKET_MANAGER;
+        Long permissions = USER_MANAGER | MILESTONE_MANAGER | TICKET_MANAGER;
         return new Permissions(permissions);
     }
 
     public static Permissions getTeamLeaderPermissions() {
-        Long permissions = TICKET_MANAGER & TICKET_DEVELOPER & REPORT_CREATOR & REPORT_DEVELOPER;
+        Long permissions = TICKET_MANAGER | TICKET_DEVELOPER | REPORT_CREATOR | REPORT_DEVELOPER;
         return new Permissions(permissions);
     }
 
     public static Permissions getDeveloperPermissions() {
-        Long permissions = TICKET_DEVELOPER & REPORT_CREATOR & REPORT_DEVELOPER;
+        Long permissions = TICKET_DEVELOPER | REPORT_CREATOR | REPORT_DEVELOPER;
         return new Permissions(permissions);
     }
 
     public static Permissions getTesterPermissions() {
-        Long permissions = REPORT_CREATOR & REPORT_MANAGER;
+        Long permissions = REPORT_CREATOR | REPORT_MANAGER;
         return new Permissions(permissions);
     }
 
@@ -110,5 +110,10 @@ public class Permissions {
 
     public boolean isReportCreator() {
         return (permissions & REPORT_CREATOR) == REPORT_CREATOR;
+    }
+
+    @Override
+    public String toString() {
+        return permissions.toString();
     }
 }

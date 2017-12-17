@@ -1,5 +1,7 @@
 package com.kspt.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.kspt.pms.exception.MilestoneTicketNotClosedException;
 import com.kspt.pms.exception.TwoActiveMilestonesException;
 import com.kspt.pms.exception.WrongStatusException;
@@ -32,11 +34,11 @@ public class Milestone {
         this.project = project;
     }
 
-    public Status getStatus() {
+    public MilestoneStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(MilestoneStatus status) {
         this.status = status;
     }
 
@@ -72,22 +74,18 @@ public class Milestone {
         this.closingDate = closingDate;
     }
 
-    public enum Status {
-        OPENED,
-        ACTIVE,
-        CLOSED
-    }
-
     @Id
     @GeneratedValue
     @Column(name = "ID")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     private Project project;
 
     @Column(name = "STATUS")
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    private MilestoneStatus status = MilestoneStatus.OPENED;
 
     @Column(name = "STARTING_TIME", columnDefinition = "DATETIME", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -105,7 +103,8 @@ public class Milestone {
     @Temporal(TemporalType.TIMESTAMP)
     private Date closingDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "milestone")
     private Set<Ticket> tickets = new HashSet<>();
 
     @Override
@@ -119,28 +118,28 @@ public class Milestone {
                 endingDate.equals(other.getEndingDate());
     }
 
-    public boolean isOpened() { return status.equals(Status.OPENED); }
-    public boolean isActive() { return status.equals(Status.ACTIVE); }
-    public boolean isClosed() { return status.equals(Status.CLOSED); }
+    public boolean isOpened() { return status.equals(MilestoneStatus.OPENED); }
+    public boolean isActive() { return status.equals(MilestoneStatus.ACTIVE); }
+    public boolean isClosed() { return status.equals(MilestoneStatus.CLOSED); }
 
     public void setActive() throws TwoActiveMilestonesException, WrongStatusException {
         if (isActive()) return;
-        if (!isOpened()) throw new WrongStatusException(getStatus().name(), Status.ACTIVE.name());
+        if (!isOpened()) throw new WrongStatusException(getStatus().name(), MilestoneStatus.ACTIVE.name());
 
         for (Milestone milestone : project.getMilestones()) {
             if (milestone.isActive()) throw new TwoActiveMilestonesException(milestone.getId(), this.getId());
         }
 
-        status = Status.ACTIVE;
+        status = MilestoneStatus.ACTIVE;
         activatedDate = new Date();
     }
 
     public void setClosed() throws MilestoneTicketNotClosedException, WrongStatusException {
         if (isClosed()) return;
-        if (!isActive()) throw new WrongStatusException(getStatus().name(), Status.CLOSED.name());
+        if (!isActive()) throw new WrongStatusException(getStatus().name(), MilestoneStatus.CLOSED.name());
         for (Ticket t : tickets)
             if (!t.isClosed()) throw new MilestoneTicketNotClosedException(t.getId());
         closingDate = new Date();
-        status = Status.CLOSED;
+        status = MilestoneStatus.CLOSED;
     }
 }

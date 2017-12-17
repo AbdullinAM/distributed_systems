@@ -32,7 +32,7 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<Message> messages = new ArrayList<>();
 
     public Long getId() {
@@ -73,5 +73,13 @@ public class User {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (! (other instanceof User)) return false;
+        User user = (User) other;
+        return getLogin().equals(user.getLogin());
     }
 }
