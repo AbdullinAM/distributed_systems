@@ -3,7 +3,7 @@ package com.kspt.pms.exception;
 /**
  * Created by kivi on 14.12.17.
  */
-public class MultipleRoleException extends Exception {
+public class MultipleRoleException extends RuntimeException {
 
     private static final String template = "User %s already have a role %s in project %s";
 

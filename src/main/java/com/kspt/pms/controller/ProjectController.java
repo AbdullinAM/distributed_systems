@@ -38,6 +38,21 @@ public class ProjectController {
                 .orElseThrow(() -> new NotFoundException(name));
     }
 
+    @RequestMapping(value = "rest/project/{name}", method = RequestMethod.PUT)
+    public void updateProject(@PathVariable String name,
+                              @RequestParam("user") String login,
+                              @RequestBody String teamLeader) {
+        Project project = projectRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(name));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        User tl = userRepository.findByLogin(teamLeader)
+                .orElseThrow(() -> new NotFoundException(login));
+        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        manager.setTeamLeader(project, tl);
+        projectRepository.save(project);
+    }
+
     @RequestMapping("rest/project/{name}/reports")
     public Collection<BugReport> getReports(@PathVariable String name) {
         Project project = projectRepository.findByName(name)
@@ -68,8 +83,7 @@ public class ProjectController {
                 .orElseThrow(() -> new NotFoundException(name));
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository,
-                commentRepository,  messageRepository);
+        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
         manager.createMilestone(project, milestone.getStartingDate(), milestone.getEndingDate());
     }
 }

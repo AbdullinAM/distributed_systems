@@ -3,7 +3,7 @@
  */
 
 function ProjectService($resource) {
-    return $resource('rest/project/:name', {name: '@name'});
+    return $resource('rest/project/:name?user=:login', {name: '@name', login: '@login'});
 }
 
 function ProjectReportService($resource) {
@@ -14,11 +14,16 @@ function ProjectMilestoneService($resource) {
     return $resource('rest/project/:name/milestones?user=:login', {name: '@name', login:'@login'});
 }
 
-function ProjectController($scope, $routeParams, UserShareService, ProjectService, ProjectReportService, ProjectMilestoneService) {
+function ProjectController($scope, $routeParams, $http,
+                           UserShareService,
+                           ProjectService,
+                           ProjectReportService,
+                           ProjectMilestoneService,
+                           UserService) {
     var url = function () {
         return {name:$routeParams.projectName};
     };
-    var add_milestone_url = function (login) {
+    var url_with_user = function (login) {
         return {name:$routeParams.projectName, login: login};
     };
 
@@ -26,6 +31,17 @@ function ProjectController($scope, $routeParams, UserShareService, ProjectServic
     this.reports = ProjectReportService.query(url());
     this.milestones = ProjectMilestoneService.query(url());
     this.user = UserShareService.getUser();
+
+    this.setTeamLeader = function () {
+        if (isEmpty($scope.teamLeaderLogin)) {
+            alert("Enter new team leader login");
+        } else {
+            $http.put('rest/project/' + this.instance.name + '?user=' + this.user.login, $scope.teamLeaderLogin)
+                .then(function () {
+                    this.updateInstance();
+                }.bind(this));
+        }
+    };
 
     this.addReport = function () {
         if (isEmpty($scope.reportDesc)) {
@@ -39,16 +55,20 @@ function ProjectController($scope, $routeParams, UserShareService, ProjectServic
                 this.updateReports();
             }.bind(this));
         }
-    }.bind(this);
+    };
 
     this.addMilestone = function () {
         var milestone = new ProjectMilestoneService();
         milestone.startingDate = $scope.startTime.getTime();
         milestone.endingDate = $scope.endTime.getTime();
-        milestone.$save(add_milestone_url(this.user.login), function () {
+        milestone.$save(url_with_user(this.user.login), function () {
             this.updateMilestones();
         }.bind(this));
-    }.bind(this);
+    };
+
+    this.updateInstance = function () {
+        this.instance = ProjectService.get(url());
+    };
 
     this.updateReports = function () {
         this.reports = ProjectReportService.query(url());

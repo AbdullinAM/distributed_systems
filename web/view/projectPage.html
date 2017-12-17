@@ -2,7 +2,11 @@
     <p>Id: {{project.instance.id}}</p>
     <p>Project: {{project.instance.name}}</p>
     <p>Manager: {{project.instance.manager.login}}</p>
-    <p>Team leader: {{project.instance.teamleader.name}}</p>
+    <p>Team leader: {{project.instance.teamLeader.login}}</p>
+    <p>
+        <input ng-model="teamLeaderLogin">
+        <button ng-click="project.setTeamLeader()">Set team leader</button>
+    </p>
 
 
     <div class="row">
@@ -10,7 +14,7 @@
             <div ng-if="project.milestones.length != 0">
                 <p>Milestones:</p>
                 <div ng-repeat="it in project.milestones" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.id}} : {{it.description}}</p>
+                    <p>{{it.id}} : {{it.startingDate | date: 'dd-MM-yyyy'}} - {{it.endingDate | date: 'dd-MM-yyyy'}}</p>
                 </div>
             </div>
             <p>Start time: <input type="date" ng-model="startTime"></p>

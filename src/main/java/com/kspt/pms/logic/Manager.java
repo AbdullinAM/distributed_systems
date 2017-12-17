@@ -66,19 +66,23 @@ public class Manager implements TicketManager {
         milestone.setClosed();
     }
 
-    public void setTeamLeader(Project project, User user) throws MultipleRoleException, NoRightsException {
+    public void setTeamLeader(Project project, User teamLeader) throws MultipleRoleException, NoRightsException {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
         if (!permissions.isUserManager())
             throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
 
-        Role role = project.getRoleForUser(user);
+        Role role = project.getRoleForUser(teamLeader);
+        User oldTL = project.getTeamLeader();
         if (role.equals(Role.NONE)) {
-            project.setTeamLeader(user);
+            project.setTeamLeader(teamLeader);
+            if (oldTL != null) project.addDeveloper(oldTL);
         } else if (role.equals(Role.DEVELOPER)) {
-            project.setTeamLeader(user);
-            project.removeDeveloper(user);
+            project.addDeveloper(project.getTeamLeader());
+            project.setTeamLeader(teamLeader);
+            project.removeDeveloper(teamLeader);
+            if (oldTL != null) project.addDeveloper(oldTL);
         } else {
-            throw new MultipleRoleException(user.getLogin(), role.toString(), project.getName());
+            throw new MultipleRoleException(teamLeader.getLogin(), role.toString(), project.getName());
         }
     }
 
