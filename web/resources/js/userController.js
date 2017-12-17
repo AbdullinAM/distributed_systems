@@ -14,7 +14,19 @@ function UserProjectService($resource) {
     return $resource('rest/:login/projects?type=:type', {login: '@login', type: '@type'});
 }
 
-function UserController($scope, $routeParams, UserService, MessageService, UserProjectService) {
+function UserShareService() {
+    var user = {};
+    return {
+        setUser: function (value) {
+            user = value;
+        },
+        getUser: function () {
+            return user;
+        }
+    };
+}
+
+function UserController($scope, $routeParams, UserService, MessageService, UserProjectService, UserShareService) {
     var url = function () {
         return {login:$routeParams.login}
     };
@@ -28,6 +40,8 @@ function UserController($scope, $routeParams, UserService, MessageService, UserP
     this.leadedProjects = UserProjectService.query(project_url("teamlead"));
     this.developedProjects = UserProjectService.query(project_url("dev"));
     this.testedProjects = UserProjectService.query(project_url("tester"));
+
+    UserShareService.setUser(this.instance);
 
     this.updateProjects = function () {
         this.managedProjects = UserProjectService.query(project_url("manager"));
@@ -52,4 +66,5 @@ angular
     .factory('UserService', UserService)
     .factory('MessageService', MessageService)
     .factory('UserProjectService', UserProjectService)
+    .factory('UserShareService', UserShareService)
     .controller('UserController', UserController);

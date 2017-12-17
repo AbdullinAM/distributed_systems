@@ -1,5 +1,5 @@
 <div>
     Login: <input ng-model="login" value="">
     Password: <input type="password" ng-model="passwd" value="">
-    <button ng-click="loginCtrl.signIn()">Sign In</button>
+    <button ng-click="loginCtrl.signIn()" ng-enter="loginCtrl.signIn()">Sign In</button>
 </div>

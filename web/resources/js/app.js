@@ -17,7 +17,7 @@ app.config(['$routeProvider', function($routeProvider){
             controller: 'UserController',
             controllerAs: 'user'
         })
-        .when('/project/:projectname', {
+        .when('/project/:projectName', {
             templateUrl: 'view/projectPage.html',
             controller: 'ProjectController',
             controllerAs: 'project'

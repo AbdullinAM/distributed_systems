@@ -27,11 +27,11 @@ public class UserController {
     ProjectRepository projectRepository;
 
     @RequestMapping("rest/{login}/authenticate")
-    public boolean authenticate(@PathVariable String login,
-                                @RequestParam("passwd") String passwd) {
+    public String authenticate(@PathVariable String login,
+                               @RequestParam("passwd") String passwd) {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException(login));
-        return user.getPassword().equals(passwd);
+        return Boolean.toString(user.getPassword().equals(passwd));
     }
 
     @RequestMapping("rest/{login}")

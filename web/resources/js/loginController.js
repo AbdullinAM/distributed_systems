@@ -14,10 +14,12 @@ function LoginController($scope, $http) {
         } else {
             $http.get('rest/' + $scope.login + '/authenticate?passwd=' + $scope.passwd)
                 .then(function (responce) {
-                    if (responce) {
+                    if (responce.data.toString() == "true") {
                         window.location.href = '#/user/' + $scope.login;
                     } else {
                         alert("Incorrect login or password");
+                        $scope.login = "";
+                        $scope.passwd = "";
                     }
                 });
         }
