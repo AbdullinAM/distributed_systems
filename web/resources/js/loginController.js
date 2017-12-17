@@ -36,6 +36,8 @@ function LoginController($scope, $http, UserService, UserShareService) {
                         $scope.login = "";
                         $scope.passwd = "";
                     }
+                }, function (error) {
+                    alert(error.data);
                 });
         }
     };
@@ -61,7 +63,9 @@ function LoginController($scope, $http, UserService, UserShareService) {
                 $scope.password1 = "";
                 $scope.password2 = "";
                 this.isRegister = false;
-            }.bind(this));
+            }.bind(this), function (error) {
+                alert(error);
+            });
         }
     }.bind(this);
 }

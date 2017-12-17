@@ -40,7 +40,9 @@ function UserController($scope, $routeParams, UserService, MessageService, UserP
             project.$save(url(), function () {
                 $scope.projectName = "";
                 this.updateProjects();
-            }.bind(this));
+            }.bind(this), function (error) {
+                alert(error);
+            });
         } else {
             alert("Enter the name of the project");
         }

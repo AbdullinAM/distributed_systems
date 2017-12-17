@@ -39,7 +39,9 @@ function ProjectController($scope, $routeParams, $http,
             $http.put('rest/project/' + this.instance.name + '?user=' + this.user.login, $scope.teamLeaderLogin)
                 .then(function () {
                     this.updateInstance();
-                }.bind(this));
+                }.bind(this), function (error) {
+                    alert(error);
+                });
         }
     };
 
@@ -53,7 +55,9 @@ function ProjectController($scope, $routeParams, $http,
             report.$save(url(), function () {
                 $scope.reportDesc = "";
                 this.updateReports();
-            }.bind(this));
+            }.bind(this), function (error) {
+                alert(error);
+            });
         }
     };
 
@@ -63,7 +67,9 @@ function ProjectController($scope, $routeParams, $http,
         milestone.endingDate = $scope.endTime.getTime();
         milestone.$save(url_with_user(this.user.login), function () {
             this.updateMilestones();
-        }.bind(this));
+        }.bind(this), function (error) {
+            alert(error);
+        });
     };
 
     this.updateInstance = function () {
