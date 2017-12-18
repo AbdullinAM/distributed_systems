@@ -11,9 +11,7 @@ import com.kspt.pms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Created by kivi on 03.12.17.
@@ -63,11 +61,13 @@ public class UserController {
     public Collection<Project> getProjects(@PathVariable String login,
                                            @RequestParam("type") String type) {
         Collection<Project> result;
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
         switch (type) {
             case "manager": result = projectRepository.findByManagerLogin(login); break;
             case "teamlead": result = projectRepository.findByTeamLeaderLogin(login); break;
-            case "dev": result = new ArrayList<>(); break;
-            case "tester": result = new ArrayList<>(); break;
+            case "dev": result = projectRepository.findByDevelopersContaining(user); break;
+            case "tester": result = projectRepository.findByTestersContaining(user); break;
             default: throw new UnknownRequestParamValueException("type", type);
         }
         return result;

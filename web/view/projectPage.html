@@ -14,7 +14,7 @@
             <h2>Developers:</h2>
             <div ng-if="project.developrs.length != 0">
                 <div ng-repeat="it in project.developers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.login}} : {{it.name}}</p>
+                    <p><a ng-href="#/user/{{it.login}}">{{it.login}} : {{it.name}}</a></p>
                 </div>
             </div>
             <p>
@@ -24,7 +24,7 @@
             <h2>Testers:</h2>
             <div ng-if="project.testers.length != 0">
                 <div ng-repeat="it in project.testers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.login}} : {{it.name}}</p>
+                    <p><a ng-href="#/user/{{it.login}}">{{it.login}} : {{it.name}}</a></p>
                 </div>
             </div>
             <p>

@@ -14,13 +14,14 @@ function UserProjectService($resource) {
     return $resource('rest/user/:login/projects?type=:type', {login: '@login', type: '@type'});
 }
 
-function UserController($scope, $routeParams, UserService, MessageService, UserProjectService) {
+function UserController($scope, $routeParams, UserService, MessageService, UserProjectService, UserShareService) {
     var url = function () {
         return {login:$routeParams.login};
     };
     var project_url = function (proj_type) {
         return {login:$routeParams.login, type: proj_type};
     };
+    this.isMe = UserShareService.getUser().login == $routeParams.login;
 
     this.instance = UserService.get(url());
     this.messages = MessageService.query(url());
