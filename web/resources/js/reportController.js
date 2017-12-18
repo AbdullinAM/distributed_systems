@@ -6,6 +6,10 @@ function ReportService($resource) {
     return $resource('rest/report/:id', {id: '@id'});
 }
 
+function ReportProjectService($resource) {
+    return $resource('rest/report/:id/project', {id: '@id'});
+}
+
 function ReportCommentService($resource) {
     return $resource('rest/report/:id/comments?user=:login', {id: '@id', login: '@login'});
 }
@@ -19,7 +23,7 @@ function ReportController($scope, $http, $routeParams, ReportService, ReportComm
     }
 
     this.user = InfoShareService.getUser();
-    this.project = InfoShareService.getProject();
+    this.project = ReportProjectService.get(url());
     this.instance = ReportService.get(url());
     this.comments = ReportCommentService.query(url());
 
@@ -58,5 +62,6 @@ function ReportController($scope, $http, $routeParams, ReportService, ReportComm
 
 app
     .factory('ReportService', ReportService)
+    .factory('ReportProjectService', ReportProjectService)
     .factory('ReportCommentService', ReportCommentService)
     .controller('ReportController', ReportController);

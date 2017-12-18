@@ -6,6 +6,10 @@ function TicketService($resource) {
     return $resource('rest/ticket/:id', {id: '@id'});
 }
 
+function TicketMilestoneService($resource) {
+    return $resource('rest/ticket/:id/milestone', {id: '@id'});
+}
+
 function TicketAssigneesService($resource) {
     return $resource('rest/ticket/:id/assignees?user=:login', {id: '@id', login: '@login'});
 }
@@ -17,7 +21,9 @@ function TicketCommentService($resource) {
 function TicketController($http, $scope, $routeParams,
                           TicketService,
                           TicketCommentService,
-                          TicketAssigneesService, InfoShareService) {
+                          TicketMilestoneService,
+                          TicketAssigneesService,
+                          InfoShareService) {
     function url() {
         return {id: $routeParams.id};
     }
@@ -25,7 +31,7 @@ function TicketController($http, $scope, $routeParams,
         return {id: $routeParams.id, login: login};
     }
     this.user = InfoShareService.getUser();
-    this.project = InfoShareService.getProject();
+    this.milestone = TicketMilestoneService.get(url());
     this.instance = TicketService.get(url());
     this.assignees = TicketAssigneesService.query(url());
     this.comments = TicketCommentService.query(url());
@@ -80,6 +86,7 @@ function TicketController($http, $scope, $routeParams,
 
 app
     .factory('TicketService', TicketService)
+    .factory('TicketMilestoneService', TicketMilestoneService)
     .factory('TicketCommentService', TicketCommentService)
     .factory('TicketAssigneesService', TicketAssigneesService)
     .controller('TicketController', TicketController);

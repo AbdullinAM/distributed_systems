@@ -28,8 +28,7 @@ function ProjectController($scope, $routeParams, $http,
                            ProjectReportService,
                            ProjectMilestoneService,
                            ProjectDeveloperService,
-                           ProjectTesterService,
-                           UserService) {
+                           ProjectTesterService) {
     var url = function () {
         return {name:$routeParams.projectName};
     };
@@ -39,7 +38,6 @@ function ProjectController($scope, $routeParams, $http,
 
     this.user = InfoShareService.getUser();
     this.instance = ProjectService.get(url());
-    InfoShareService.setProject(this.instance);
     this.reports = ProjectReportService.query(url());
     this.milestones = ProjectMilestoneService.query(url());
     this.developers = ProjectDeveloperService.query(url());

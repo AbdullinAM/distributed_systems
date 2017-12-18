@@ -34,6 +34,13 @@ public class MilestoneController {
                 .orElseThrow(() -> new NotFoundException("Milestone " + id.toString()));
     }
 
+    @RequestMapping("/rest/milestone/{id}/project")
+    public Project getMilestoneProject(@PathVariable Long id) {
+        Milestone milestone = milestoneRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Milestone " + id.toString()));
+        return milestone.getProject();
+    }
+
     @RequestMapping(value = "/rest/milestone/{id}", method = RequestMethod.PUT)
     public void updateStatus(@PathVariable Long id,
                              @RequestParam("user") String login,

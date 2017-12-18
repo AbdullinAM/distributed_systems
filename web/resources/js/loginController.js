@@ -11,12 +11,6 @@ function InfoShareService() {
         },
         getUser: function () {
             return user;
-        },
-        setProject: function (value) {
-            project = value;
-        },
-        getProject: function () {
-            return project;
         }
     };
 }

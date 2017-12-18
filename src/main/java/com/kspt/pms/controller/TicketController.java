@@ -1,9 +1,6 @@
 package com.kspt.pms.controller;
 
-import com.kspt.pms.entity.BugReport;
-import com.kspt.pms.entity.Comment;
-import com.kspt.pms.entity.Ticket;
-import com.kspt.pms.entity.User;
+import com.kspt.pms.entity.*;
 import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.logic.Developer;
 import com.kspt.pms.logic.Manager;
@@ -35,6 +32,13 @@ public class TicketController {
     public Ticket getTicket(@PathVariable Long id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Ticket: " + id.toString()));
+    }
+
+    @RequestMapping("/rest/ticket/{id}/milestone")
+    public Milestone getTicketMilestone(@PathVariable Long id) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Ticket: " + id.toString()));
+        return ticket.getMilestone();
     }
 
     @RequestMapping(value = "/rest/ticket/{id}", method = RequestMethod.PUT)
