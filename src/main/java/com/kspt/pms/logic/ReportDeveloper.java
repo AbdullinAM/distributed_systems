@@ -34,6 +34,7 @@ public interface ReportDeveloper extends ReportCommenter {
             throw new AlreadyAcceptedException(report, getUser());
 
         report.setAccepted();
+        report.setDeveloper(getUser());
         commentReport(report, "Accepted");
     }
 

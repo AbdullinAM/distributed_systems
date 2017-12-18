@@ -27,6 +27,11 @@ app.config(['$routeProvider', function($routeProvider){
             controller: 'MilestoneController',
             controllerAs: 'milestone'
         })
+        .when('/report/:id', {
+            templateUrl: 'view/reportPage.html',
+            controller: 'ReportController',
+            controllerAs: 'report'
+        })
         .otherwise(
             { redirectTo: '/'}
         );

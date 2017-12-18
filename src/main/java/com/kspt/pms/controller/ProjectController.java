@@ -26,6 +26,8 @@ public class ProjectController {
     @Autowired
     MilestoneRepository milestoneRepository;
     @Autowired
+    BugReportRepository bugReportRepository;
+    @Autowired
     TicketRepository ticketRepository;
     @Autowired
     CommentRepository commentRepository;
@@ -48,7 +50,7 @@ public class ProjectController {
                 .orElseThrow(() -> new NotFoundException(login));
         User tl = userRepository.findByLogin(teamLeader)
                 .orElseThrow(() -> new NotFoundException(login));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
         manager.setTeamLeader(project, tl);
         projectRepository.save(project);
     }
@@ -64,7 +66,7 @@ public class ProjectController {
     public void addReport(@PathVariable String name, @RequestBody BugReport report) {
         Project project = projectRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(name));
-        Developer creator = new Developer(report.getCreator());
+        Developer creator = new Developer(report.getCreator(), bugReportRepository, commentRepository, messageRepository);
         creator.createReport(project, report.getDescription());
     }
 
@@ -83,8 +85,9 @@ public class ProjectController {
                 .orElseThrow(() -> new NotFoundException(name));
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
-        manager.createMilestone(project, milestone.getStartingDate(), milestone.getEndingDate());
+        Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
+        milestone = manager.createMilestone(project, milestone.getStartingDate(), milestone.getEndingDate());
+        milestoneRepository.save(milestone);
     }
 
     @RequestMapping("rest/project/{name}/developers")
@@ -104,7 +107,7 @@ public class ProjectController {
                 .orElseThrow(() -> new NotFoundException(login));
         User dev = userRepository.findByLogin(developer.getLogin())
                 .orElseThrow(() -> new NotFoundException(developer.getLogin()));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
         manager.addDeveloper(project, dev);
         projectRepository.save(project);
     }
@@ -126,7 +129,7 @@ public class ProjectController {
                 .orElseThrow(() -> new NotFoundException(login));
         User test = userRepository.findByLogin(tester.getLogin())
                 .orElseThrow(() -> new NotFoundException(tester.getLogin()));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
         manager.addTester(project, test);
         projectRepository.save(project);
     }

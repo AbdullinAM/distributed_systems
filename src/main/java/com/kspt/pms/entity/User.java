@@ -76,6 +76,11 @@ public class User {
     }
 
     @Override
+    public int hashCode() {
+        return login.hashCode();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (other == null) return false;
         if (! (other instanceof User)) return false;

@@ -48,7 +48,7 @@ function MilestoneController($routeParams, $scope, $http, InfoShareService, Mile
 
     this.updateInstance = function () {
         this.instance = MilestoneService.get(url());
-    }
+    };
 
     this.updateTickets = function () {
         this.tickets = MilestoneTicketService.query(url());

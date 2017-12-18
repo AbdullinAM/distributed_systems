@@ -38,13 +38,11 @@ public class MilestoneController {
     public void updateStatus(@PathVariable Long id,
                              @RequestParam("user") String login,
                              @RequestBody String status) {
-        System.out.println("User " + login);
-        System.out.println("Changing status to " + status);
         Milestone milestone = milestoneRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Milestone " + id.toString()));
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
         switch (status) {
             case "ACTIVE": manager.activateMilestone(milestone); break;
             case "CLOSED": manager.closeMilestone(milestone); break;
@@ -68,7 +66,7 @@ public class MilestoneController {
                 .orElseThrow(() -> new NotFoundException("Milestone " + id.toString()));
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
-        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
         manager.createTicket(milestone, ticket.getTask());
     }
 }

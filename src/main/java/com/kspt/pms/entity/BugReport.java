@@ -32,15 +32,15 @@ public class BugReport {
     @Enumerated(EnumType.STRING)
     private ReportStatus status = ReportStatus.OPENED;
 
-    @Column(name = "CREATION_TIME", columnDefinition = "DATETIME")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATION_TIME")
+    @Temporal(TemporalType.DATE)
     private Date creationTime = new Date();
 
     @Column(name = "DESCRIPTION")
     private String description;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "BUGREPORT_COMMENTS",
             joinColumns = { @JoinColumn(name = "bugreport") },
@@ -102,6 +102,14 @@ public class BugReport {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public boolean isOpened()   { return status.equals(ReportStatus.OPENED); }

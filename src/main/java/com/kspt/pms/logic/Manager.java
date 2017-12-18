@@ -21,15 +21,13 @@ import java.util.Set;
 public class Manager implements TicketManager {
 
     private User user;
-    MilestoneRepository milestoneRepository;
     TicketRepository ticketRepository;
     CommentRepository commentRepository;
     MessageRepository messageRepository;
 
-    public Manager(User user, MilestoneRepository milestoneRepository, TicketRepository ticketRepository,
+    public Manager(User user, TicketRepository ticketRepository,
                    CommentRepository commentRepository, MessageRepository messageRepository) {
         this.user = user;
-        this.milestoneRepository = milestoneRepository;
         this.ticketRepository = ticketRepository;
         this.commentRepository = commentRepository;
         this.messageRepository = messageRepository;
@@ -44,7 +42,6 @@ public class Manager implements TicketManager {
         milestone.setProject(project);
         milestone.setStartingDate(start);
         milestone.setEndingDate(end);
-        milestoneRepository.save(milestone);
         return milestone;
     }
 

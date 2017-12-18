@@ -1,0 +1,24 @@
+<div>
+    <p>Report: {{report.instance.id}}</p>
+    <p>Project: <a ng-href="#/project/{{report.project.name}}">{{report.project.name}}</a></p>
+    <p>Creator: {{report.instance.creator.login}}</p>
+    <p>Status: {{report.instance.status}}</p>
+    <p>Creation date: {{report.instance.creationTime| date: 'dd-MM-yyyy'}}</p>
+    <p>Developer: <a ng-href="#/user/{{rreport.instance.developer.login}}">{{report.instance.developer.name}}</a></p>
+
+    <div>
+        <button ng-click="report.changeStatus('OPENED')">Set opened</button>
+        <button ng-click="report.changeStatus('ACCEPTED')">Set accepted</button>
+        <button ng-click="report.changeStatus('FIXED')">Set fixed</button>
+        <button ng-click="report.changeStatus('CLOSED')">Set closed</button>
+    </div>
+
+    <textarea rows="5" cols="50" ng-model="reportComment"></textarea>
+
+    <h2>Comments:</h2>
+    <div ng-if="report.comments.length != 0">
+        <div ng-repeat="it in report.comments" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+            <p><a ng-href="#/user/{{it.user.login}}">{{it.user.name}}</a>: {{it.description}}</p>
+        </div>
+    </div>
+</div>

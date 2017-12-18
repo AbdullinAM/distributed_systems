@@ -12,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Developer implements ReportCreator, ReportDeveloper, TicketDeveloper  {
 
     private User user;
-    @Autowired
     BugReportRepository bugReportRepository;
-    @Autowired
     CommentRepository commentRepository;
-    @Autowired
     MessageRepository messageRepository;
 
-    public Developer(User user) {
+    public Developer(User user,
+                     BugReportRepository bugReportRepository,
+                     CommentRepository commentRepository,
+                     MessageRepository messageRepository) {
         this.user = user;
+        this.bugReportRepository = bugReportRepository;
+        this.commentRepository = commentRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Override

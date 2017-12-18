@@ -48,7 +48,8 @@
             <h2>Bug reports:</h2>
             <div ng-if="project.reports.length != 0">
                 <div ng-repeat="it in project.reports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                    <p>{{it.id}} : {{it.description}}</p>
+                    <p><a ng-href="#/report/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
+                    <p>{{it.description}}</p>
                 </div>
             </div>
             <textarea rows="10" cols="50" ng-model="reportDesc"></textarea>
