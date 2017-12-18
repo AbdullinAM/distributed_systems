@@ -3,6 +3,7 @@ package com.kspt.pms.logic;
 import com.kspt.pms.entity.*;
 import com.kspt.pms.exception.MilestoneAlreadyClosedException;
 import com.kspt.pms.exception.NoRightsException;
+import com.kspt.pms.exception.WrongStatusException;
 import com.kspt.pms.repository.CommentRepository;
 import com.kspt.pms.repository.TicketRepository;
 
@@ -45,12 +46,16 @@ public interface TicketManager  extends TicketCommenter {
 
     default void reopenTicket(Ticket ticket) throws NoRightsException {
         checkTicketManagerPermissions(ticket);
+        if (ticket.isNew())
+            throw new WrongStatusException("Reopened", "Reopened");
         ticket.setNew();
         commentTicket(ticket, "Reopened");
     }
 
     default void closeTicket(Ticket ticket) throws NoRightsException {
         checkTicketManagerPermissions(ticket);
+        if (ticket.isClosed())
+            throw new WrongStatusException("Closed", "Closed");
         ticket.setClosed();
         commentTicket(ticket, "Closed");
     }

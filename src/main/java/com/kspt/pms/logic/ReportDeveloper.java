@@ -6,6 +6,7 @@ import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.AlreadyAcceptedException;
 import com.kspt.pms.exception.NoRightsException;
+import com.kspt.pms.exception.WrongStatusException;
 import com.kspt.pms.repository.CommentRepository;
 
 /**
@@ -32,6 +33,8 @@ public interface ReportDeveloper extends ReportCommenter {
         checkReportDeveloperPermissions(report);
         if (report.getDeveloper() != null && !report.getDeveloper().equals(getUser()))
             throw new AlreadyAcceptedException(report, getUser());
+        if (report.isAccepted())
+            throw new WrongStatusException("Accepted", "Accepted");
 
         report.setAccepted();
         report.setDeveloper(getUser());
@@ -40,6 +43,8 @@ public interface ReportDeveloper extends ReportCommenter {
 
     default void fixReport(BugReport report) throws NoRightsException {
         checkReportDeveloperPermissions(report);
+        if (report.isFixed())
+            throw new WrongStatusException("Fixed", "Fixed");
         report.setFixed();
         commentReport(report, "Fixed");
     }

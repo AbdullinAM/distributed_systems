@@ -1,4 +1,10 @@
 <div>
+
+    <ul>
+        <li><a ng-href="#/user/{{ticket.user.login}}">Home</a></li>
+        <li><a ng-href="#/login">Log out</a></li>
+    </ul>
+
     <p>Ticket {{ticket.instance.id}}</p>
     <p>Milestone: <a ng-href="#/milestone/{{ticket.milestone.id}}">{{ticket.milestone.id}}</a></p>
     <p>Creation time: {{ticket.instance.creationTime| date: 'dd-MM-yyyy'}}</p>

@@ -1,4 +1,10 @@
 <div>
+
+    <ul>
+        <li><a ng-href="#/user/{{report.user.login}}">Home</a></li>
+        <li><a ng-href="#/login">Log out</a></li>
+    </ul>
+
     <p>Report: {{report.instance.id}}</p>
     <p>Project: <a ng-href="#/project/{{report.project.name}}">{{report.project.name}}</a></p>
     <p>Creator: <a ng-href="#/user/{{report.instance.creator.login}}">{{report.instance.creator.login}}</a></p>

@@ -1,4 +1,10 @@
 <div>
+
+    <ul>
+        <li><a ng-href="#/user/{{project.user.login}}">Home</a></li>
+        <li><a ng-href="#/login">Log out</a></li>
+    </ul>
+
     <p>Id: {{project.instance.id}}</p>
     <p>Project: {{project.instance.name}}</p>
     <p>Manager: <a ng-href="#/user/{{project.instance.manager.login}}">{{project.instance.manager.name}}</a></p>

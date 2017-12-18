@@ -1,4 +1,10 @@
 <div>
+
+    <ul>
+        <li><a ng-href="#/user/{{milestone.user.login}}">Home</a></li>
+        <li><a ng-href="#/login">Log out</a></li>
+    </ul>
+
     <p>Milestone {{milestone.instance.id}}</p>
     <p>Project <a ng-href="#/project/{{milestone.project.name}}">{{milestone.project.name}}</a></p>
     <p>Status: {{milestone.instance.status}}</p>

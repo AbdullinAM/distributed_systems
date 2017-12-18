@@ -5,6 +5,7 @@ import com.kspt.pms.entity.Comment;
 import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.NoRightsException;
+import com.kspt.pms.exception.WrongStatusException;
 import com.kspt.pms.repository.CommentRepository;
 
 /**
@@ -21,12 +22,16 @@ public interface ReportManager extends ReportCommenter {
 
     default void reopenReport(BugReport report) throws NoRightsException {
         checkReportManagerPermissions(report);
+        if (report.isOpened())
+            throw new WrongStatusException("Opened", "Opened");
         report.setReopened();
         commentReport(report, "Opened");
     }
 
     default void closeReport(BugReport report) throws NoRightsException {
         checkReportManagerPermissions(report);
+        if (report.isClosed())
+            throw new WrongStatusException("Closed", "Closed");
         report.setClosed();
         commentReport(report, "Closed");
     }

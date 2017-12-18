@@ -38,6 +38,10 @@
         display: table;
         clear: both;
     }
+
+    li {
+        display: inline;
+    }
 </style>
 
 

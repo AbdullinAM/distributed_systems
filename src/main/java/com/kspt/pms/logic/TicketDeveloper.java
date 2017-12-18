@@ -5,6 +5,7 @@ import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.Ticket;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.NoRightsException;
+import com.kspt.pms.exception.WrongStatusException;
 import com.kspt.pms.repository.CommentRepository;
 
 /**
@@ -30,18 +31,24 @@ public interface TicketDeveloper extends TicketCommenter {
 
     default void acceptTicket(Ticket ticket) throws NoRightsException {
         checkTicketDeveloperPermissions(ticket);
+        if (ticket.isAccepted())
+            throw new WrongStatusException("Accepted", "Accepted");
         ticket.setAccepted();
         commentTicket(ticket, "Accepted");
     }
 
     default void setInProgress(Ticket ticket) throws NoRightsException {
         checkTicketDeveloperPermissions(ticket);
+        if (ticket.isInProgress())
+            throw new WrongStatusException("In progress", "In progress");
         ticket.setInProgress();
         commentTicket(ticket, "In progress");
     }
 
     default void finishTicket(Ticket ticket) throws NoRightsException {
         checkTicketDeveloperPermissions(ticket);
+        if (ticket.isFinished())
+            throw new WrongStatusException("Finished", "Finished");
         ticket.setFinished();
         commentTicket(ticket, "Finished");
     }

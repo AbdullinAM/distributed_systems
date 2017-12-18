@@ -50,6 +50,8 @@ public class Manager implements TicketManager {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
         if (!permissions.isMilestoneManager())
             throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
+        if (milestone.isActive())
+            throw new WrongStatusException("Active", "Active");
 
         milestone.setActive();
     }
@@ -59,6 +61,8 @@ public class Manager implements TicketManager {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
         if (!permissions.isMilestoneManager())
             throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
+        if (milestone.isClosed())
+            throw new WrongStatusException("Closed", "Closed");
 
         milestone.setClosed();
     }
