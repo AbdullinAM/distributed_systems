@@ -9,36 +9,70 @@
                 <button ng-click="user.createProject()">Create project</button><input ng-model="projectName" value="">
             </div>
             <div ng-if="user.managedProjects.length != 0">
-                <p>Managed Projects:</p>
+                <h2>Managed Projects:</h2>
                 <div ng-repeat="it in user.managedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                     <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
                 </div>
             </div>
 
             <div ng-if="user.leadedProjects.length != 0">
-                <p>Leaded Projects:</p>
+                <h2>Leaded Projects:</h2>
                 <div ng-repeat="it in user.leadedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                     <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
                 </div>
             </div>
 
             <div ng-if="user.developedProjects.length != 0">
-                <p>Developed Projects:</p>
+                <h2>Developed Projects:</h2>
                 <div ng-repeat="it in user.developedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                     <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
                 </div>
             </div>
 
             <div ng-if="user.testedProjects.length != 0">
-                <p>Tested Projects:</p>
+                <h2>Tested Projects:</h2>
                 <div ng-repeat="it in user.testedProjects" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                     <p>{{it.id}} : <a ng-href="#/project/{{it.name}}">{{it.name}}</a></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column equal">
+                    <h2>Managed reports</h2>
+                    <div ng-repeat="it in user.managedReports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                        <p><a ng-href="#/report/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
+                        <p>{{it.description}}</p>
+                    </div>
+                </div>
+                <div class="column equal">
+                    <h2>Assigned reports</h2>
+                    <div ng-repeat="it in user.assignedReports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                        <p><a ng-href="#/report/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
+                        <p>{{it.description}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column equal">
+                    <h2>Managed tickets</h2>
+                    <div ng-repeat="it in user.managedTickets" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                        <p><a ng-href="#/ticket/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
+                        <p>{{it.description}}</p>
+                    </div>
+                </div>
+                <div class="column equal">
+                    <h2>Assigned tickets</h2>
+                    <div ng-repeat="it in user.assignedTickets" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                        <p><a ng-href="#/ticket/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
+                        <p>{{it.description}}</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="column right">
-            <p>Messages:</p>
+            <h2>Messages:</h2>
             <div ng-repeat="message in user.messages" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                 <p>{{message.id}} : {{message.content}}</p>
             </div>

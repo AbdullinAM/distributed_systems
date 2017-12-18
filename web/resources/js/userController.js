@@ -14,7 +14,31 @@ function UserProjectService($resource) {
     return $resource('rest/user/:login/projects?type=:type', {login: '@login', type: '@type'});
 }
 
-function UserController($scope, $routeParams, UserService, MessageService, UserProjectService, InfoShareService) {
+function UserManReportsService($resource) {
+    return $resource('rest/user/:login/managed_reports', {login: '@login'});
+}
+
+function UserAssReportsService($resource) {
+    return $resource('rest/user/:login/assigned_reports', {login: '@login'});
+}
+
+function UserManTicketsService($resource) {
+    return $resource('rest/user/:login/managed_tickets', {login: '@login'});
+}
+
+function UserAssTicketsService($resource) {
+    return $resource('rest/user/:login/assigned_tickets', {login: '@login'});
+}
+
+function UserController($scope, $routeParams,
+                        UserService,
+                        MessageService,
+                        UserProjectService,
+                        UserManReportsService,
+                        UserAssReportsService,
+                        UserManTicketsService,
+                        UserAssTicketsService,
+                        InfoShareService) {
     var url = function () {
         return {login:$routeParams.login};
     };
@@ -29,6 +53,11 @@ function UserController($scope, $routeParams, UserService, MessageService, UserP
     this.leadedProjects = UserProjectService.query(project_url("teamlead"));
     this.developedProjects = UserProjectService.query(project_url("dev"));
     this.testedProjects = UserProjectService.query(project_url("tester"));
+
+    this.managedReports = UserManReportsService.query(url());
+    this.assignedReports = UserAssReportsService.query(url());
+    this.managedTickets = UserManTicketsService.query(url());
+    this.assignedTickets = UserAssTicketsService.query(url());
 
     this.updateProjects = function () {
         this.managedProjects = UserProjectService.query(project_url("manager"));
@@ -55,4 +84,8 @@ angular
     .factory('UserService', UserService)
     .factory('MessageService', MessageService)
     .factory('UserProjectService', UserProjectService)
+    .factory('UserManReportsService', UserManReportsService)
+    .factory('UserAssReportsService', UserAssReportsService)
+    .factory('UserManTicketsService', UserManTicketsService)
+    .factory('UserAssTicketsService', UserAssTicketsService)
     .controller('UserController', UserController);

@@ -1,13 +1,9 @@
 package com.kspt.pms.controller;
 
-import com.kspt.pms.entity.Message;
-import com.kspt.pms.entity.Project;
-import com.kspt.pms.entity.User;
+import com.kspt.pms.entity.*;
 import com.kspt.pms.exception.UnknownRequestParamValueException;
 import com.kspt.pms.exception.NotFoundException;
-import com.kspt.pms.repository.MessageRepository;
-import com.kspt.pms.repository.ProjectRepository;
-import com.kspt.pms.repository.UserRepository;
+import com.kspt.pms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +20,10 @@ public class UserController {
     MessageRepository messageRepository;
     @Autowired
     ProjectRepository projectRepository;
+    @Autowired
+    TicketRepository ticketRepository;
+    @Autowired
+    BugReportRepository bugReportRepository;
 
     @RequestMapping("rest/user/{login}/authenticate")
     public String authenticate(@PathVariable String login,
@@ -79,5 +79,27 @@ public class UserController {
                 .orElseThrow(() -> new NotFoundException(login));
         project.setManager(user);
         projectRepository.save(project);
+    }
+
+    @RequestMapping("rest/user/{login}/managed_tickets")
+    public Collection<Ticket> getManagedTickets(@PathVariable String login) {
+        return ticketRepository.findByCreatorLogin(login);
+    }
+
+    @RequestMapping("rest/user/{login}/assigned_tickets")
+    public Collection<Ticket> getAssignedTickets(@PathVariable String login) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        return ticketRepository.findByAssigneesContaining(user);
+    }
+
+    @RequestMapping("rest/user/{login}/managed_reports")
+    public Collection<BugReport> getManagedReports(@PathVariable String login) {
+        return bugReportRepository.findByCreatorLogin(login);
+    }
+
+    @RequestMapping("rest/user/{login}/assigned_reports")
+    public Collection<BugReport> getAssignedReports(@PathVariable String login) {
+        return bugReportRepository.findByDeveloperLogin(login);
     }
 }
