@@ -145,4 +145,11 @@ public class Project {
     public void addTester(User tester) {
         testers.add(tester);
     }
+
+    public Set<User> getAllDevelopers() {
+        Set<User> dev = new HashSet<>();
+        dev.addAll(developers);
+        dev.add(teamLeader);
+        return dev;
+    }
 }

@@ -2,6 +2,7 @@ package com.kspt.pms.controller;
 
 import com.kspt.pms.entity.BugReport;
 import com.kspt.pms.entity.Comment;
+import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.logic.Developer;
@@ -33,6 +34,13 @@ public class ReportController {
     public BugReport getReport(@PathVariable Long id) {
         return bugReportRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Report " + id.toString()));
+    }
+
+    @RequestMapping("/rest/report/{id}/project")
+    public Project getProject(@PathVariable Long id) {
+        BugReport report = bugReportRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Report " + id.toString()));
+        return report.getProject();
     }
 
     @RequestMapping(value = "/rest/report/{id}", method = RequestMethod.PUT)

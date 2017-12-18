@@ -14,7 +14,11 @@ function ReportCommentService($resource) {
     return $resource('rest/report/:id/comments?user=:login', {id: '@id', login: '@login'});
 }
 
-function ReportController($scope, $http, $routeParams, ReportService, ReportCommentService, InfoShareService) {
+function ReportController($scope, $http, $routeParams,
+                          ReportService,
+                          ReportCommentService,
+                          ReportProjectService,
+                          InfoShareService) {
     function url() {
         return {id: $routeParams.id};
     }
