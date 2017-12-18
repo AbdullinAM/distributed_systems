@@ -23,6 +23,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Created by kivi on 07.12.17.
@@ -69,6 +70,12 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         return jdbcTemplate;
     }
 
+    public Properties additionalProreties() {
+        Properties properties = new Properties();
+//        properties.setProperty("hibernate.show_sql", "true");
+        return properties;
+    }
+
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -87,6 +94,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         factory.setDataSource(dataSource());
         factory.setPersistenceUnitName("my-pms");
         factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        factory.setJpaProperties(additionalProreties());
         factory.afterPropertiesSet();
         return factory.getObject();
     }

@@ -23,7 +23,7 @@ function ProjectTesterService($resource) {
 }
 
 function ProjectController($scope, $routeParams, $http,
-                           UserShareService,
+                           InfoShareService,
                            ProjectService,
                            ProjectReportService,
                            ProjectMilestoneService,
@@ -37,8 +37,9 @@ function ProjectController($scope, $routeParams, $http,
         return {name:$routeParams.projectName, login: login};
     };
 
-    this.user = UserShareService.getUser();
+    this.user = InfoShareService.getUser();
     this.instance = ProjectService.get(url());
+    InfoShareService.setProject(this.instance);
     this.reports = ProjectReportService.query(url());
     this.milestones = ProjectMilestoneService.query(url());
     this.developers = ProjectDeveloperService.query(url());

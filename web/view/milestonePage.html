@@ -1,0 +1,21 @@
+<div>
+    <p>Milestone {{milestone.instance.id}}</p>
+    <p>Project <a ng-href="#/project/{{milestone.project.name}}">{{milestone.project.name}}</a></p>
+    <p>Status: {{milestone.instance.status}}</p>
+    <p>Starting date: {{milestone.instance.startingDate | date: 'dd-MM-yyyy'}}</p>
+    <p>Ending date: {{milestone.instance.endingDate | date: 'dd-MM-yyyy'}}</p>
+    <p>Activated date: {{milestone.instance.activatedDate | date: 'dd-MM-yyyy'}}</p>
+    <p>Closing date: {{milestone.instance.closingDate | date: 'dd-MM-yyyy'}}</p>
+
+    <button ng-click="milestone.changeStatus('ACTIVE')">Activate</button>
+    <button ng-click="milestone.changeStatus('CLOSED')">Close</button>
+
+    <h2>Tickets:</h2>
+    <div ng-if="project.milestones.length != 0">
+        <div ng-repeat="it in milestone.tickets" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+            <p><a ng-href="#/ticket/{{it.id}}">{{it.id}}</a> : {{it.task}} : {{it.status}}</p>
+        </div>
+    </div>
+    <textarea rows="10" cols="50" ng-model="ticketTask"></textarea>
+    <button ng-click="milestone.addTicket()">Add ticket</button>
+</div>

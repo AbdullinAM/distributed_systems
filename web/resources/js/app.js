@@ -22,6 +22,11 @@ app.config(['$routeProvider', function($routeProvider){
             controller: 'ProjectController',
             controllerAs: 'project'
         })
+        .when('/milestone/:id', {
+            templateUrl: 'view/milestonePage.html',
+            controller: 'MilestoneController',
+            controllerAs: 'milestone'
+        })
         .otherwise(
             { redirectTo: '/'}
         );

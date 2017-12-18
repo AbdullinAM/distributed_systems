@@ -1,10 +1,11 @@
 package com.kspt.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.kspt.pms.exception.MilestoneTicketNotClosedException;
 import com.kspt.pms.exception.TwoActiveMilestonesException;
 import com.kspt.pms.exception.WrongStatusException;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -66,12 +67,20 @@ public class Milestone {
         this.endingDate = endingDate;
     }
 
-    public Date getClosingDate() {
-        return closingDate;
+    public Date getClosedDate() {
+        return closedDate;
     }
 
-    public void setClosingDate(Date closingDate) {
-        this.closingDate = closingDate;
+    public void setClosedDate(Date closedDate) {
+        this.closedDate = closedDate;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Id
@@ -87,24 +96,25 @@ public class Milestone {
     @Enumerated(EnumType.STRING)
     private MilestoneStatus status = MilestoneStatus.OPENED;
 
-    @Column(name = "STARTING_TIME", columnDefinition = "DATETIME", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "STARTING_DATE", nullable = false)
     private Date startingDate;
 
-    @Column(name = "ACTIVATED_TIME", columnDefinition = "DATETIME")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ACTIVATED_DATE")
+    @Temporal(TemporalType.DATE)
     private Date activatedDate;
 
-    @Column(name = "ENDING_TIME", columnDefinition = "DATETIME", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "ENDING_DATE", nullable = false)
     private Date endingDate;
 
-    @Column(name = "CLOSED_TIME", columnDefinition = "DATETIME")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date closingDate;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "CLOSED_DATE")
+    private Date closedDate;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "milestone")
+    @Fetch(value = FetchMode.SELECT)
     private Set<Ticket> tickets = new HashSet<>();
 
     @Override
@@ -139,7 +149,7 @@ public class Milestone {
         if (!isActive()) throw new WrongStatusException(getStatus().name(), MilestoneStatus.CLOSED.name());
         for (Ticket t : tickets)
             if (!t.isClosed()) throw new MilestoneTicketNotClosedException(t.getId());
-        closingDate = new Date();
+        closedDate = new Date();
         status = MilestoneStatus.CLOSED;
     }
 }

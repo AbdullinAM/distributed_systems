@@ -1,5 +1,7 @@
 package com.kspt.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,6 +19,7 @@ public class Ticket {
     @Column(name = "ID")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     private Milestone milestone;
 
@@ -27,6 +30,7 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status = TicketStatus.NEW;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "TICKET_ASSIGNEES",
@@ -42,6 +46,7 @@ public class Ticket {
     @Column(name = "TASK")
     private String task;
 
+    @JsonIgnore
     @OneToMany
     @JoinTable(
             name = "TICKET_COMMENTS",

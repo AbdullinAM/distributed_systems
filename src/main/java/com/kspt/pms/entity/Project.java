@@ -1,6 +1,8 @@
 package com.kspt.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -36,6 +38,7 @@ public class Project {
             joinColumns = { @JoinColumn(name = "entity") },
             inverseJoinColumns = { @JoinColumn(name = "user") }
     )
+    @Fetch(value = FetchMode.SELECT)
     private Set<User> developers = new HashSet<>();
 
     @JsonIgnore
@@ -46,14 +49,17 @@ public class Project {
             joinColumns = { @JoinColumn(name = "entity") },
             inverseJoinColumns = { @JoinColumn(name = "user") }
     )
+    @Fetch(value = FetchMode.SELECT)
     private Set<User> testers = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+    @Fetch(value = FetchMode.SELECT)
     private Set<Milestone> milestones = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+    @Fetch(value = FetchMode.SELECT)
     private Set<BugReport> reports = new HashSet<>();
 
     public Long getId() {
