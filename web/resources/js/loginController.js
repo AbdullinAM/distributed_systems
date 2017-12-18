@@ -4,7 +4,6 @@
 
 function InfoShareService() {
     var user = {};
-    var project = {};
     return {
         setUser: function (value) {
             user = value;
@@ -72,6 +71,6 @@ function LoginController($scope, $http, UserService, InfoShareService) {
 }
 
 app
-    .factory('InfoShareService', InfoShareService)
+    .service('InfoShareService', InfoShareService)
     .controller('LoginController', LoginController);
 

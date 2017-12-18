@@ -45,9 +45,13 @@ function UserController($scope, $routeParams,
     var project_url = function (proj_type) {
         return {login:$routeParams.login, type: proj_type};
     };
-    this.isMe = InfoShareService.getUser().login == $routeParams.login;
-    console.log(InfoShareService.getUser().login);
-    this.authlogin = InfoShareService.getUser().login;
+    if (InfoShareService.getUser().login) {
+        this.authlogin = InfoShareService.getUser().login;
+        this.isMe = false;
+    } else {
+        this.authlogin = $routeParams.login;
+        this.isMe = true;
+    }
 
     this.instance = UserService.get(url());
     this.messages = MessageService.query(url());
