@@ -1,6 +1,8 @@
 package com.kspt.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,7 +33,8 @@ public class Ticket {
     private TicketStatus status = TicketStatus.NEW;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @JoinTable(
             name = "TICKET_ASSIGNEES",
             joinColumns = { @JoinColumn(name = "ticket") },
@@ -39,15 +42,15 @@ public class Ticket {
     )
     private Set<User> assignees = new HashSet<>();
 
-    @Column(name = "CREATION_TIME", columnDefinition = "DATETIME")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATION_TIME")
+    @Temporal(TemporalType.DATE)
     private Date creationTime = new Date();
 
     @Column(name = "TASK")
     private String task;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "TICKET_COMMENTS",
             joinColumns = { @JoinColumn(name = "ticket") },

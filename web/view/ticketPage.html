@@ -1,0 +1,32 @@
+<div>
+    <p>Ticket {{ticket.instance.id}}</p>
+    <p>Project: <a ng-href="#/project/{{ticket.project.name}}">{{ticket.project.name}}</a></p>
+    <p>Creation time: {{ticket.instance.creationTime| date: 'dd-MM-yyyy'}}</p>
+    <p>Creator: <a ng-href="#/user/{{ticket.instance.creator.login}}">{{ticket.instance.creator.login}}</a></p>
+    <p>Status: {{ticket.instance.status}}</p>
+    <p>Task: {{ticket.instance.task}}</p>
+
+    <div>
+        <button ng-click="ticket.changeStatus('OPENED')">Set opened</button>
+        <button ng-click="ticket.changeStatus('ACCEPTED')">Set accepted</button>
+        <button ng-click="ticket.changeStatus('IN_PROGRESS')">Set in progress</button>
+        <button ng-click="ticket.changeStatus('FINISHED')">Set finished</button>
+        <button ng-click="ticket.changeStatus('CLOSED')">Set closed</button>
+    </div>
+
+    <h2>Assignees:</h2>
+    <div ng-repeat="it in ticket.assignees" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+        <p><a ng-href="#/user/{{it.login}}">{{it.name}}</a></p>
+    </div>
+    <p>
+        <input ng-model="assigneeLogin">
+        <button ng-click="ticket.addAssignee()">Add assignee</button>
+    </p>
+
+    <h2>Comments:</h2>
+    <textarea rows="5" cols="50" ng-model="ticketComment"></textarea>
+    <button ng-click="ticket.commentTicket()">comment</button>
+    <div ng-repeat="it in ticket.comments" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+        <p><a ng-href="#/user/{{it.user.login}}">{{it.user.name}}</a>: {{it.description}}</p>
+    </div>
+</div>

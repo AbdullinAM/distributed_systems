@@ -14,17 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TeamLeader implements ReportCreator, ReportDeveloper, TicketManager, TicketDeveloper {
 
     private User user;
-    @Autowired
     TicketRepository ticketRepository;
-    @Autowired
     BugReportRepository bugReportRepository;
-    @Autowired
     CommentRepository commentRepository;
-    @Autowired
     MessageRepository messageRepository;
 
-    public TeamLeader(User user) {
+    public TeamLeader(User user,
+                      TicketRepository ticketRepository,
+                      BugReportRepository bugReportRepository,
+                      CommentRepository commentRepository,
+                      MessageRepository messageRepository) {
         this.user = user;
+        this.ticketRepository = ticketRepository;
+        this.bugReportRepository = bugReportRepository;
+        this.commentRepository = commentRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Override

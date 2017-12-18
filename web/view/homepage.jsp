@@ -52,6 +52,7 @@
 <script src="resources/js/projectController.js"></script>
 <script src="resources/js/milestoneController.js"></script>
 <script src="resources/js/reportController.js"></script>
+<script src="resources/js/ticketController.js"></script>
 
 <div ng-view></div>
 </body>

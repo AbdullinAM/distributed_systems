@@ -19,11 +19,10 @@ public interface ReportManager extends ReportCommenter {
             throw new NoRightsException(user, Permissions.getRepoortManager(), project);
     }
 
-    default void reopenReport(BugReport report, String comment) throws NoRightsException {
+    default void reopenReport(BugReport report) throws NoRightsException {
         checkReportManagerPermissions(report);
         report.setReopened();
         commentReport(report, "Opened");
-        commentReport(report, comment);
     }
 
     default void closeReport(BugReport report) throws NoRightsException {

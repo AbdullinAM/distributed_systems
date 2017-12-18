@@ -32,6 +32,11 @@ app.config(['$routeProvider', function($routeProvider){
             controller: 'ReportController',
             controllerAs: 'report'
         })
+        .when('/ticket/:id', {
+            templateUrl: 'view/ticketPage.html',
+            controller: 'TicketController',
+            controllerAs: 'ticket'
+        })
         .otherwise(
             { redirectTo: '/'}
         );

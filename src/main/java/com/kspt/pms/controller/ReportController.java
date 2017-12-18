@@ -47,7 +47,7 @@ public class ReportController {
         Developer developer = new Developer(user, bugReportRepository, commentRepository, messageRepository);
         switch (status) {
             case "OPENED":
-                tester.reopenReport(report, "Reopened");
+                tester.reopenReport(report);
                 break;
             case "ACCEPTED":
                 developer.acceptReport(report);
@@ -56,7 +56,7 @@ public class ReportController {
                 developer.fixReport(report);
                 break;
             case "CLOSED":
-                tester.reopenReport(report, "Reopened");
+                tester.closeReport(report);
                 break;
             default: break;
         }
@@ -68,5 +68,18 @@ public class ReportController {
         BugReport report = bugReportRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Report " + id.toString()));
         return report.getComments();
+    }
+
+    @RequestMapping(value = "/rest/report/{id}/comments", method = RequestMethod.POST)
+    public void getComments(@PathVariable Long id,
+                            @RequestParam("user") String login,
+                            @RequestBody Comment comment) {
+        BugReport report = bugReportRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Report " + id.toString()));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        Developer developer = new Developer(user, bugReportRepository, commentRepository, messageRepository);
+        developer.commentReport(report, comment.getDescription());
+        bugReportRepository.save(report);
     }
 }

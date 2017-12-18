@@ -16,7 +16,7 @@ public interface TicketManager  extends TicketCommenter {
         User user = getUser();
         Project project = ticket.getMilestone().getProject();
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isTicketDeveloper())
+        if (!permissions.isTicketManager())
             throw new NoRightsException(user, Permissions.getTicketManager(), project);
     }
 
@@ -34,24 +34,19 @@ public interface TicketManager  extends TicketCommenter {
         return ticket;
     }
 
-    default void addAssignee(Ticket ticket, TicketDeveloper developer) throws NoRightsException {
+    default void addAssignee(Ticket ticket, User developer) throws NoRightsException {
         checkTicketManagerPermissions(ticket);
-        User user = developer.getUser();
         Project project = ticket.getMilestone().getProject();
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
+        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(developer));
         if (!permissions.isTicketDeveloper())
-            throw new NoRightsException(user, Permissions.getTicketDeveloper(), project);
-        ticket.addAssignee(user);
+            throw new NoRightsException(developer, Permissions.getTicketDeveloper(), project);
+        ticket.addAssignee(developer);
     }
 
-    default void reopenTicket(Ticket ticket, String description) throws NoRightsException {
+    default void reopenTicket(Ticket ticket) throws NoRightsException {
         checkTicketManagerPermissions(ticket);
         ticket.setNew();
-        Comment comment = new Comment();
-        comment.setDescription(description);
-        comment.setUser(getUser());
-        getCommentRepository().save(comment);
-        ticket.addComment(comment);
+        commentTicket(ticket, "Reopened");
     }
 
     default void closeTicket(Ticket ticket) throws NoRightsException {
