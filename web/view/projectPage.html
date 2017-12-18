@@ -11,8 +11,32 @@
 
     <div class="row">
         <div class="column equal">
+            <h2>Developers:</h2>
+            <div ng-if="project.developrs.length != 0">
+                <div ng-repeat="it in project.developers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.login}} : {{it.name}}</p>
+                </div>
+            </div>
+            <p>
+                <input ng-model="developerLogin">
+                <button ng-click="project.addDeveloper()">Add developer</button>
+            </p>
+            <h2>Testers:</h2>
+            <div ng-if="project.testers.length != 0">
+                <div ng-repeat="it in project.testers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                    <p>{{it.login}} : {{it.name}}</p>
+                </div>
+            </div>
+            <p>
+                <input ng-model="testerLogin">
+                <button ng-click="project.addTester()">Add tester</button>
+            </p>
+        </div>
+
+        <div class="column equal">
+
+            <h2>Milestones:</h2>
             <div ng-if="project.milestones.length != 0">
-                <p>Milestones:</p>
                 <div ng-repeat="it in project.milestones" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                     <p>{{it.id}} : {{it.startingDate | date: 'dd-MM-yyyy'}} - {{it.endingDate | date: 'dd-MM-yyyy'}}</p>
                 </div>
@@ -20,11 +44,9 @@
             <p>Start time: <input type="date" ng-model="startTime"></p>
             <p>End time: <input type="date" ng-model="endTime"></p>
             <p><button ng-click="project.addMilestone()">Add milestone</button></p>
-        </div>
 
-        <div class="column equal">
+            <h2>Bug reports:</h2>
             <div ng-if="project.reports.length != 0">
-                <p>Bug reports:</p>
                 <div ng-repeat="it in project.reports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                     <p>{{it.id}} : {{it.description}}</p>
                 </div>

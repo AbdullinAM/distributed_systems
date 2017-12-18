@@ -86,4 +86,48 @@ public class ProjectController {
         Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
         manager.createMilestone(project, milestone.getStartingDate(), milestone.getEndingDate());
     }
+
+    @RequestMapping("rest/project/{name}/developers")
+    public Collection<User> getDevelopers(@PathVariable String name) {
+        Project project = projectRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(name));
+        return project.getDevelopers();
+    }
+
+    @RequestMapping(value = "rest/project/{name}/developers", method = RequestMethod.POST)
+    public void addDeveloper(@PathVariable String name,
+                             @RequestParam("user") String login,
+                             @RequestBody User developer) {
+        Project project = projectRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(name));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        User dev = userRepository.findByLogin(developer.getLogin())
+                .orElseThrow(() -> new NotFoundException(developer.getLogin()));
+        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        manager.addDeveloper(project, dev);
+        projectRepository.save(project);
+    }
+
+    @RequestMapping("rest/project/{name}/testers")
+    public Collection<User> getTesters(@PathVariable String name) {
+        Project project = projectRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(name));
+        return project.getTesters();
+    }
+
+    @RequestMapping(value = "rest/project/{name}/testers", method = RequestMethod.POST)
+    public void addTester(@PathVariable String name,
+                          @RequestParam("user") String login,
+                          @RequestBody User tester) {
+        Project project = projectRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(name));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        User test = userRepository.findByLogin(tester.getLogin())
+                .orElseThrow(() -> new NotFoundException(tester.getLogin()));
+        Manager manager = new Manager(user, milestoneRepository, ticketRepository, commentRepository, messageRepository);
+        manager.addTester(project, test);
+        projectRepository.save(project);
+    }
 }

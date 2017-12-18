@@ -86,29 +86,29 @@ public class Manager implements TicketManager {
         }
     }
 
-    public void addDeveloper(Project project, User user) throws MultipleRoleException, NoRightsException {
+    public void addDeveloper(Project project, User developer) throws MultipleRoleException, NoRightsException {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
         if (!permissions.isUserManager())
             throw new NoRightsException(user, Permissions.getUserManager(), project);
 
-        Role role = project.getRoleForUser(user);
+        Role role = project.getRoleForUser(developer);
         if (role.equals(Role.NONE)) {
-            project.addDeveloper(user);
+            project.addDeveloper(developer);
         } else {
-            throw new MultipleRoleException(user.getLogin(), role.toString(), project.getName());
+            throw new MultipleRoleException(developer.getLogin(), role.toString(), project.getName());
         }
     }
 
-    public void addTester(Project project, User user) throws MultipleRoleException, NoRightsException {
+    public void addTester(Project project, User tester) throws MultipleRoleException, NoRightsException {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
         if (!permissions.isUserManager())
             throw new NoRightsException(user, Permissions.getUserManager(), project);
 
-        Role role = project.getRoleForUser(user);
+        Role role = project.getRoleForUser(tester);
         if (role.equals(Role.NONE)) {
-            project.addTester(user);
+            project.addTester(tester);
         } else {
-            throw new MultipleRoleException(user.getLogin(), role.toString(), project.getName());
+            throw new MultipleRoleException(tester.getLogin(), role.toString(), project.getName());
         }
     }
 

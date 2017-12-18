@@ -14,11 +14,21 @@ function ProjectMilestoneService($resource) {
     return $resource('rest/project/:name/milestones?user=:login', {name: '@name', login:'@login'});
 }
 
+function ProjectDeveloperService($resource) {
+    return $resource('rest/project/:name/developers?user=:login', {name: '@name', login: '@login'});
+}
+
+function ProjectTesterService($resource) {
+    return $resource('rest/project/:name/testers?user=:login', {name: '@name', login: '@login'});
+}
+
 function ProjectController($scope, $routeParams, $http,
                            UserShareService,
                            ProjectService,
                            ProjectReportService,
                            ProjectMilestoneService,
+                           ProjectDeveloperService,
+                           ProjectTesterService,
                            UserService) {
     var url = function () {
         return {name:$routeParams.projectName};
@@ -27,10 +37,12 @@ function ProjectController($scope, $routeParams, $http,
         return {name:$routeParams.projectName, login: login};
     };
 
+    this.user = UserShareService.getUser();
     this.instance = ProjectService.get(url());
     this.reports = ProjectReportService.query(url());
     this.milestones = ProjectMilestoneService.query(url());
-    this.user = UserShareService.getUser();
+    this.developers = ProjectDeveloperService.query(url());
+    this.testers = ProjectTesterService.query(url());
 
     this.setTeamLeader = function () {
         if (isEmpty($scope.teamLeaderLogin)) {
@@ -42,6 +54,36 @@ function ProjectController($scope, $routeParams, $http,
                 }.bind(this), function (error) {
                     alert(error);
                 });
+        }
+    };
+
+    this.addDeveloper = function () {
+        if (isEmpty($scope.developerLogin)) {
+            alert("Enter new developer login");
+        } else {
+            var dev = new ProjectDeveloperService();
+            dev.login = $scope.developerLogin;
+            dev.$save(url_with_user(this.user.login), function () {
+                $scope.developerLogin = "";
+                this.updateDevelopers();
+            }.bind(this), function (error) {
+                alert(error);
+            });
+        }
+    };
+
+    this.addTester = function () {
+        if (isEmpty($scope.testerLogin)) {
+            alert("Enter new tester login");
+        } else {
+            var tester = new ProjectTesterService();
+            tester.login = $scope.testerLogin;
+            tester.$save(url_with_user(this.user.login), function () {
+                $scope.testerLogin = "";
+                this.updateTesters();
+            }.bind(this), function (error) {
+                alert(error);
+            });
         }
     };
 
@@ -83,9 +125,19 @@ function ProjectController($scope, $routeParams, $http,
     this.updateMilestones = function () {
         this.milestones = ProjectMilestoneService.query(url());
     };
+
+    this.updateDevelopers = function () {
+        this.developers = ProjectDeveloperService.query(url());
+    };
+
+    this.updateTesters = function () {
+        this.testers = ProjectTesterService.query(url());
+    };
 }
 
 app.factory('ProjectService', ProjectService)
     .factory('ProjectReportService', ProjectReportService)
     .factory('ProjectMilestoneService', ProjectMilestoneService)
+    .factory('ProjectDeveloperService', ProjectDeveloperService)
+    .factory('ProjectTesterService', ProjectTesterService)
     .controller('ProjectController', ProjectController);
