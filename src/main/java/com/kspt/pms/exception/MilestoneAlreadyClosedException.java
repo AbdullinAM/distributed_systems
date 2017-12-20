@@ -5,7 +5,7 @@ import com.kspt.pms.entity.Milestone;
 /**
  * Created by kivi on 14.12.17.
  */
-public class MilestoneAlreadyClosedException extends RuntimeException {
+public class MilestoneAlreadyClosedException extends PMSException {
 
     private static final String template = "Milestone %d of project %s is already closed";
 

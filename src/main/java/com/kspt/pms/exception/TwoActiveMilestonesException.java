@@ -3,7 +3,7 @@ package com.kspt.pms.exception;
 /**
  * Created by kivi on 14.12.17.
  */
-public class TwoActiveMilestonesException extends RuntimeException {
+public class TwoActiveMilestonesException extends PMSException {
 
     private static final String template = "Attempting to activate milestone %d, when milestone %d is already active";
 

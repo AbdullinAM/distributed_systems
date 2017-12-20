@@ -22,13 +22,6 @@ public interface ReportDeveloper extends ReportCommenter {
             throw new NoRightsException(user, Permissions.getReportDeveloper(), project);
     }
 
-    default void notifyNew(BugReport report) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("New bug report: ");
-        builder.append(report.toString());
-        addMessage(builder.toString());
-    }
-
     default void acceptReport(BugReport report) throws AlreadyAcceptedException, NoRightsException {
         checkReportDeveloperPermissions(report);
         if (report.getDeveloper() != null && !report.getDeveloper().equals(getUser()))

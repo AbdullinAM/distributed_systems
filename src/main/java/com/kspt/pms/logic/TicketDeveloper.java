@@ -22,13 +22,6 @@ public interface TicketDeveloper extends TicketCommenter {
             throw new NoRightsException(user, Permissions.getTicketDeveloper(), project);
     }
 
-    default void notifyNew(Ticket ticket) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("New ticket: ");
-        builder.append(ticket.toString());
-        addMessage(builder.toString());
-    }
-
     default void acceptTicket(Ticket ticket) throws NoRightsException {
         checkTicketDeveloperPermissions(ticket);
         if (ticket.isAccepted())

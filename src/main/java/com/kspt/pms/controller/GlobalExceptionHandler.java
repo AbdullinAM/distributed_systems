@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity handleException(RuntimeException e) {
+    @ExceptionHandler(PMSException.class)
+    public ResponseEntity handleException(PMSException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorResponse.setMessage(e.getMessage());

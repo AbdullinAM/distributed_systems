@@ -1,6 +1,7 @@
 package com.kspt.pms.controller;
 
 import com.kspt.pms.entity.*;
+import com.kspt.pms.exception.ProjectAlreadyExistsException;
 import com.kspt.pms.exception.UnknownRequestParamValueException;
 import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.exception.UserAlreadyExistsException;
@@ -54,14 +55,6 @@ public class UserController {
         return messageRepository.findByOwnerLogin(login);
     }
 
-    @RequestMapping(value = "rest/user/{login}/messages", method = RequestMethod.POST)
-    public void addMessage(@PathVariable String login, @RequestBody Message message) {
-        User user = userRepository.findByLogin(login)
-                .orElseThrow(() -> new NotFoundException(login));
-        message.setOwner(user);
-        messageRepository.save(message);
-    }
-
     @RequestMapping("rest/user/{login}/projects")
     public Collection<Project> getProjects(@PathVariable String login,
                                            @RequestParam("type") String type) {
@@ -82,6 +75,8 @@ public class UserController {
     public void createProject(@PathVariable String login, @RequestBody Project project) {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
+        if (projectRepository.findByName(project.getName()).isPresent())
+            throw new ProjectAlreadyExistsException(project.getName());
         project.setManager(user);
         projectRepository.save(project);
     }

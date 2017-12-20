@@ -77,11 +77,11 @@ function TicketController($http, $scope, $routeParams,
 
     this.update = function () {
         this.instance = TicketService.get(url());
-    }
+    };
 
     this.updateComments = function () {
         this.comments = TicketCommentService.query(url());
-    }
+    };
 }
 
 app

@@ -10,7 +10,7 @@ import com.kspt.pms.logic.Permissions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class NoRightsException extends RuntimeException {
+public class NoRightsException extends PMSException {
 
     private static final String template = "User %s don't have permission %s for project %s";
 

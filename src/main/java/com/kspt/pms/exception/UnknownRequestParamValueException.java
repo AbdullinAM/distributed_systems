@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * Created by kivi on 15.12.17.
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class UnknownRequestParamValueException extends RuntimeException {
+public class UnknownRequestParamValueException extends PMSException {
 
     private static final String temlate = "Param %s have unknown value %s";
 

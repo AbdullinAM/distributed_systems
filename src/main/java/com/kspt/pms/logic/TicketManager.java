@@ -47,6 +47,7 @@ public interface TicketManager  extends TicketCommenter {
         if (!permissions.isTicketDeveloper())
             throw new NoRightsException(developer, Permissions.getTicketDeveloper(), project);
         ticket.addAssignee(developer);
+        commentTicket(ticket, "Added new assignee: " + developer.getLogin());
     }
 
     default void reopenTicket(Ticket ticket) throws NoRightsException {
