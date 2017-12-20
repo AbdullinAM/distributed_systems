@@ -79,7 +79,8 @@
 
         <div class="column right">
             <h2>Messages:</h2>
-            <div ng-repeat="message in user.messages" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+            <div ng-repeat="message in (user.messages | orderBy: 'date': true)" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+                <p>{{message.date| date: 'dd-MM-yyyy hh:mm:ss'}}</p>
                 <p>{{message.id}} : {{message.content}}</p>
             </div>
         </div>

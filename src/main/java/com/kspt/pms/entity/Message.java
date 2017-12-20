@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kspt.pms.entity.User;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by kivi on 26.11.17.
@@ -15,6 +16,10 @@ public class Message {
     @Column(name = "ID")
     @GeneratedValue
     private Long id;
+
+    @Column(name = "CREATED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date = new Date();
 
     @JsonIgnore
     @ManyToOne
@@ -48,5 +53,13 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

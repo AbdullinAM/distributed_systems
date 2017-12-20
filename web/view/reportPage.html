@@ -23,7 +23,8 @@
     <button ng-click="report.commentReport()">comment</button>
 
     <h2>Comments:</h2>
-    <div ng-repeat="it in report.comments" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+    <div ng-repeat="it in (report.comments | orderBy: 'date': true)" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
+        <p>{{it.date| date: 'dd-MM-yyyy hh:mm:ss'}}</p>
         <p><a ng-href="#/user/{{it.user.login}}">{{it.user.name}}</a>: {{it.description}}</p>
     </div>
 </div>

@@ -1,6 +1,7 @@
 package com.kspt.pms.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by kivi on 03.12.17.
@@ -12,6 +13,10 @@ public class Comment {
     @GeneratedValue
     @Column(name = "ID")
     private Long id;
+
+    @Column(name = "CREATED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date = new Date();
 
     @ManyToOne
     private User user;
@@ -41,5 +46,13 @@ public class Comment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
