@@ -41,7 +41,9 @@ function MilestoneController($routeParams, $scope, $http,
             ticket.$save(url_with_login(this.user.login), function () {
                 $scope.ticketTask = "";
                 this.updateTickets();
-            }.bind(this));
+            }.bind(this), function (error) {
+                alert(error.data.message);
+            });
         }
     };
 
@@ -50,7 +52,7 @@ function MilestoneController($routeParams, $scope, $http,
             .then(function () {
                 this.updateInstance();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
     };
 

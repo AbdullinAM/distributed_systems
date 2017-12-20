@@ -51,7 +51,7 @@ function ProjectController($scope, $routeParams, $http,
                 .then(function () {
                     this.updateInstance();
                 }.bind(this), function (error) {
-                    alert(error);
+                    alert(error.data.message);
                 });
         }
     };
@@ -66,7 +66,7 @@ function ProjectController($scope, $routeParams, $http,
                 $scope.developerLogin = "";
                 this.updateDevelopers();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         }
     };
@@ -81,7 +81,7 @@ function ProjectController($scope, $routeParams, $http,
                 $scope.testerLogin = "";
                 this.updateTesters();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         }
     };
@@ -97,7 +97,7 @@ function ProjectController($scope, $routeParams, $http,
                 $scope.reportDesc = "";
                 this.updateReports();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         }
     };
@@ -109,7 +109,7 @@ function ProjectController($scope, $routeParams, $http,
         milestone.$save(url_with_user(this.user.login), function () {
             this.updateMilestones();
         }.bind(this), function (error) {
-            alert(error);
+            alert(error.data.message);
         });
     };
 

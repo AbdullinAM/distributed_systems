@@ -3,6 +3,7 @@ package com.kspt.pms.controller;
 import com.kspt.pms.entity.*;
 import com.kspt.pms.exception.UnknownRequestParamValueException;
 import com.kspt.pms.exception.NotFoundException;
+import com.kspt.pms.exception.UserAlreadyExistsException;
 import com.kspt.pms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,9 @@ public class UserController {
                                @RequestParam("passwd") String passwd) {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
-        return Boolean.toString(user.getPassword().equals(passwd));
+        if (!user.getPassword().equals(passwd))
+            throw new NotFoundException(login);
+        return "true";
     }
 
     @RequestMapping("rest/user/{login}")
@@ -41,6 +44,8 @@ public class UserController {
 
     @RequestMapping(value = "rest/user/{login}", method = RequestMethod.POST)
     public void addUser(@PathVariable String login, @RequestBody User user) {
+        if (userRepository.findByLogin(login).isPresent())
+            throw new UserAlreadyExistsException(login);
         userRepository.save(user);
     }
 

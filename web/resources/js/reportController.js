@@ -36,7 +36,7 @@ function ReportController($scope, $http, $routeParams,
             .then(function () {
                 this.update();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
         });
     };
 
@@ -50,7 +50,7 @@ function ReportController($scope, $http, $routeParams,
                 $scope.reportComment = "";
                 this.updateComments();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         }
     };

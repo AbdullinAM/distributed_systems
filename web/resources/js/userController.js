@@ -67,7 +67,7 @@ function UserController($scope, $routeParams,
 
     this.updateProjects = function () {
         this.managedProjects = UserProjectService.query(project_url("manager"));
-    }.bind(this);
+    };
 
     this.createProject = function () {
         if ($scope.projectName) {
@@ -77,7 +77,7 @@ function UserController($scope, $routeParams,
                 $scope.projectName = "";
                 this.updateProjects();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         } else {
             alert("Enter the name of the project");

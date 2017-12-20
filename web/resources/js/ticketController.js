@@ -43,7 +43,7 @@ function TicketController($http, $scope, $routeParams,
             $scope.assigneeLogin = "";
             this.updateAssignees();
         }.bind(this), function (error) {
-            alert(error);
+            alert(error.data.message);
         });
     };
 
@@ -56,7 +56,7 @@ function TicketController($http, $scope, $routeParams,
             .then(function () {
                 this.update();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
         });
     };
 
@@ -70,7 +70,7 @@ function TicketController($http, $scope, $routeParams,
                 $scope.ticketComment = "";
                 this.updateComments();
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         }
     };

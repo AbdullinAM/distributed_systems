@@ -37,7 +37,9 @@ function LoginController($scope, $http, UserService, InfoShareService) {
                         $scope.passwd = "";
                     }
                 }, function (error) {
-                    alert(error.data);
+                    alert("Incorrect login or password");
+                    $scope.login = "";
+                    $scope.passwd = "";
                 });
         }
     };
@@ -64,7 +66,7 @@ function LoginController($scope, $http, UserService, InfoShareService) {
                 $scope.password2 = "";
                 this.isRegister = false;
             }.bind(this), function (error) {
-                alert(error);
+                alert(error.data.message);
             });
         }
     }.bind(this);
