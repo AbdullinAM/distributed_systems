@@ -20,6 +20,8 @@ public interface TicketDeveloper extends TicketCommenter {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
         if (!permissions.isTicketDeveloper())
             throw new NoRightsException(user, Permissions.getTicketDeveloper(), project);
+        if (!ticket.getAssignees().contains(getUser()))
+            throw new NoRightsException(user, Permissions.getTicketDeveloper(), project);
     }
 
     default void acceptTicket(Ticket ticket) throws NoRightsException {

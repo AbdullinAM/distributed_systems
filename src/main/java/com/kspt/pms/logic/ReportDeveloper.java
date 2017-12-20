@@ -36,6 +36,7 @@ public interface ReportDeveloper extends ReportCommenter {
 
     default void fixReport(BugReport report) throws NoRightsException {
         checkReportDeveloperPermissions(report);
+        if (!getUser().equals(report.getDeveloper()));
         if (report.isFixed())
             throw new WrongStatusException("Fixed", "Fixed");
         report.setFixed();
