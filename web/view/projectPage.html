@@ -22,7 +22,7 @@
                     <h3>Developers:</h3>
                     <div ng-repeat="it in project.developers">
                         <div class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading"><a ng-href="#/user/{{it.user.login}}">{{it.name}}</a></h4>
+                            <h4 class="alert-heading"><a ng-href="#/user/{{it.login}}">{{it.name}}</a></h4>
                         </div>
                     </div>
                     <div ng-show="project.permissions.userManager">
@@ -32,7 +32,7 @@
                     <h3>Testers:</h3>
                     <div ng-repeat="it in project.testers">
                         <div class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading"><a ng-href="#/user/{{it.user.login}}">{{it.name}}</a></h4>
+                            <h4 class="alert-heading"><a ng-href="#/user/{{it.login}}">{{it.name}}</a></h4>
                         </div>
                     </div>
                     <div ng-show="project.permissions.userManager">
@@ -45,7 +45,7 @@
                     <h2>Milestones:</h2>
                     <div ng-repeat="it in project.milestones">
                         <div class="alert alert-info" role="alert">
-                            <h4 class="alert-heading"><a ng-href="#/milestone/{{it.id}}">{{it.id}} : {{it.startingDate | date: 'dd-MM-yyyy'}} - {{it.endingDate | date: 'dd-MM-yyyy'}}</a></h4>
+                            <h4 class="alert-heading"><a ng-href="#/milestone/{{it.id}}">{{it.startingDate | date: 'dd-MM-yyyy'}} - {{it.endingDate | date: 'dd-MM-yyyy'}} : {{it.status}}</a></h4>
                             <p>{{it.description}}</p>
                         </div>
                     </div>

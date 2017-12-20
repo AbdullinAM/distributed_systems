@@ -60,7 +60,7 @@ public class ProjectController {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException(login));
         User tl = userRepository.findByLogin(teamLeader)
-                .orElseThrow(() -> new NotFoundException(login));
+                .orElseThrow(() -> new NotFoundException(teamLeader));
         Manager manager = new Manager(user, ticketRepository, commentRepository, messageRepository);
         manager.setTeamLeader(project, tl);
         projectRepository.save(project);

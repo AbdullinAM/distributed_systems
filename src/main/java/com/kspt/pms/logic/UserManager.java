@@ -20,12 +20,24 @@ public interface UserManager extends UserInterface {
         User oldTL = project.getTeamLeader();
         if (role.equals(Role.NONE)) {
             project.setTeamLeader(teamLeader);
-            if (oldTL != null) project.addDeveloper(oldTL);
+            UserImpl tlUser = new UserImpl(teamLeader, getMessageRepository());
+            tlUser.addMessage("Assigned as team leader to project " + project.getName());
+            if (oldTL != null) {
+                project.addDeveloper(oldTL);
+                UserImpl oldTLUser = new UserImpl(teamLeader, getMessageRepository());
+                oldTLUser.addMessage("Changed from team leader to developer in project " + project.getName());
+            }
         } else if (role.equals(Role.DEVELOPER)) {
             project.addDeveloper(project.getTeamLeader());
             project.setTeamLeader(teamLeader);
             project.removeDeveloper(teamLeader);
-            if (oldTL != null) project.addDeveloper(oldTL);
+            UserImpl tlUser = new UserImpl(teamLeader, getMessageRepository());
+            tlUser.addMessage("Changed from developer to team leader in project " + project.getName());
+            if (oldTL != null) {
+                project.addDeveloper(oldTL);
+                UserImpl oldTLUser = new UserImpl(teamLeader, getMessageRepository());
+                oldTLUser.addMessage("Changed from team leader to developer in project " + project.getName());
+            }
         } else {
             throw new MultipleRoleException(teamLeader.getLogin(), role.toString(), project.getName());
         }
@@ -39,6 +51,8 @@ public interface UserManager extends UserInterface {
         Role role = project.getRoleForUser(developer);
         if (role.equals(Role.NONE)) {
             project.addDeveloper(developer);
+            UserImpl devUser = new UserImpl(developer, getMessageRepository());
+            devUser.addMessage("Assigned as developer to project " + project.getName());
         } else {
             throw new MultipleRoleException(developer.getLogin(), role.toString(), project.getName());
         }
@@ -52,6 +66,8 @@ public interface UserManager extends UserInterface {
         Role role = project.getRoleForUser(tester);
         if (role.equals(Role.NONE)) {
             project.addTester(tester);
+            UserImpl testerUser = new UserImpl(tester, getMessageRepository());
+            testerUser.addMessage("Assigned as tester to project " + project.getName());
         } else {
             throw new MultipleRoleException(tester.getLogin(), role.toString(), project.getName());
         }

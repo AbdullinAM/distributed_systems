@@ -4,10 +4,7 @@ import com.kspt.pms.entity.Milestone;
 import com.kspt.pms.entity.MilestoneStatus;
 import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.Ticket;
-import com.kspt.pms.exception.MilestoneTicketNotClosedException;
-import com.kspt.pms.exception.NoRightsException;
-import com.kspt.pms.exception.TwoActiveMilestonesException;
-import com.kspt.pms.exception.WrongStatusException;
+import com.kspt.pms.exception.*;
 
 import java.util.Date;
 
@@ -20,6 +17,9 @@ public interface MilestoneManager extends UserInterface {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(getUser()));
         if (!permissions.isMilestoneManager())
             throw new NoRightsException(getUser(), Permissions.getMilestoneManager(), project);
+        Date current = new Date();
+        if ((new Date()).compareTo(end) < 0)
+            throw new IncorrectMilestoneDateException();
 
         Milestone milestone = new Milestone();
         milestone.setProject(project);
