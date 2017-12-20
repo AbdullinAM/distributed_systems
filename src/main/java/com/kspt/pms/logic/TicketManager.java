@@ -32,6 +32,11 @@ public interface TicketManager  extends TicketCommenter {
         ticket.setTask(task);
         ticket.setCreator(getUser());
         getTicketRepository().save(ticket);
+
+        project.getAllDevelopers().forEach(it -> {
+            UserInterface usr = new UserImpl(it, getMessageRepository());
+            usr.addMessage("New ticket " + ticket.getId() + " in project " + project.getName());
+        });
         return ticket;
     }
 

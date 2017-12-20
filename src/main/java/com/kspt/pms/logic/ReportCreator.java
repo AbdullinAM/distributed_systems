@@ -32,6 +32,11 @@ public interface ReportCreator  extends ReportCommenter {
         report.setProject(project);
         report.setDescription(description);
         getBugReportRepository().save(report);
+
+        project.getAllDevelopers().forEach(it -> {
+            UserInterface usr = new UserImpl(it, getMessageRepository());
+            usr.addMessage("New bug report " + report.getId() + " in project " + project.getName());
+        });
         return report;
     }
 }
