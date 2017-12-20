@@ -2,10 +2,7 @@ package com.kspt.pms.controller;
 
 import com.kspt.pms.entity.*;
 import com.kspt.pms.exception.NotFoundException;
-import com.kspt.pms.logic.Developer;
-import com.kspt.pms.logic.Manager;
-import com.kspt.pms.logic.TeamLeader;
-import com.kspt.pms.logic.Tester;
+import com.kspt.pms.logic.*;
 import com.kspt.pms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +29,16 @@ public class TicketController {
     public Ticket getTicket(@PathVariable Long id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Ticket: " + id.toString()));
+    }
+
+    @RequestMapping("/rest/ticket/{id}/permissions")
+    public Permissions getPermissions(@PathVariable Long id,
+                                      @RequestParam("user") String login) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Ticket: " + id.toString()));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        return Permissions.getPermissionsByRole(ticket.getMilestone().getProject().getRoleForUser(user));
     }
 
     @RequestMapping("/rest/ticket/{id}/milestone")

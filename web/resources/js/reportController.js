@@ -6,6 +6,10 @@ function ReportService($resource) {
     return $resource('rest/report/:id', {id: '@id'});
 }
 
+function ReportPermService($resource) {
+    return $resource('rest/report/:id/permissions?user=:login', {id: '@id', login: '@login'});
+}
+
 function ReportProjectService($resource) {
     return $resource('rest/report/:id/project', {id: '@id'});
 }
@@ -16,6 +20,7 @@ function ReportCommentService($resource) {
 
 function ReportController($scope, $http, $routeParams,
                           ReportService,
+                          ReportPermService,
                           ReportCommentService,
                           ReportProjectService,
                           InfoShareService) {
@@ -27,6 +32,7 @@ function ReportController($scope, $http, $routeParams,
     }
 
     this.user = InfoShareService.getUser();
+    this.permissions = ReportPermService.get(url_with_login(this.user.login));
     this.project = ReportProjectService.get(url());
     this.instance = ReportService.get(url());
     this.comments = ReportCommentService.query(url());
@@ -66,6 +72,7 @@ function ReportController($scope, $http, $routeParams,
 
 app
     .factory('ReportService', ReportService)
+    .factory('ReportPermService', ReportPermService)
     .factory('ReportProjectService', ReportProjectService)
     .factory('ReportCommentService', ReportCommentService)
     .controller('ReportController', ReportController);

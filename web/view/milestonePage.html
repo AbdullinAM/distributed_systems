@@ -13,8 +13,10 @@
     <p>Activated date: {{milestone.instance.activatedDate | date: 'dd-MM-yyyy'}}</p>
     <p>Closing date: {{milestone.instance.closingDate | date: 'dd-MM-yyyy'}}</p>
 
-    <button ng-click="milestone.changeStatus('ACTIVE')">Activate</button>
-    <button ng-click="milestone.changeStatus('CLOSED')">Close</button>
+    <div ng-show="milestone.permissions.milestoneManager">
+        <button ng-click="milestone.changeStatus('ACTIVE')">Activate</button>
+        <button ng-click="milestone.changeStatus('CLOSED')">Close</button>
+    </div>
 
     <h2>Tickets:</h2>
     <div ng-if="project.milestones.length != 0">

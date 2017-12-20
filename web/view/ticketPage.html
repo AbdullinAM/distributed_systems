@@ -12,11 +12,15 @@
     <p>Status: {{ticket.instance.status}}</p>
     <p>Task: {{ticket.instance.task}}</p>
 
-    <div>
+    <div ng-show="ticket.permissions.ticketManager">
         <button ng-click="ticket.changeStatus('OPENED')">Set opened</button>
+    </div>
+    <div ng-show="ticket.permissions.ticketDeveloper">
         <button ng-click="ticket.changeStatus('ACCEPTED')">Set accepted</button>
         <button ng-click="ticket.changeStatus('IN_PROGRESS')">Set in progress</button>
         <button ng-click="ticket.changeStatus('FINISHED')">Set finished</button>
+    </div>
+    <div ng-show="ticket.permissions.ticketManager">
         <button ng-click="ticket.changeStatus('CLOSED')">Set closed</button>
     </div>
     <div class="row">
@@ -25,10 +29,10 @@
             <div ng-repeat="it in ticket.assignees" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                 <p><a ng-href="#/user/{{it.login}}">{{it.name}}</a></p>
             </div>
-            <p>
+            <div ng-show="ticket.permissions.ticketCommenter">
                 <input ng-model="assigneeLogin">
                 <button ng-click="ticket.addAssignee()">Add assignee</button>
-            </p>
+            </div>
         </div>
 
         <div class="column equal">

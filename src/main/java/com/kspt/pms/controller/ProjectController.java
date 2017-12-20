@@ -8,6 +8,7 @@ import com.kspt.pms.exception.NoRightsException;
 import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.logic.Developer;
 import com.kspt.pms.logic.Manager;
+import com.kspt.pms.logic.Permissions;
 import com.kspt.pms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,16 @@ public class ProjectController {
     public Project getProject(@PathVariable String name) {
         return projectRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(name));
+    }
+
+    @RequestMapping("rest/project/{name}/permissions")
+    public Permissions getPermissions(@PathVariable String name,
+                                      @RequestParam("user") String login) {
+        Project project = projectRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(name));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        return Permissions.getPermissionsByRole(project.getRoleForUser(user));
     }
 
     @RequestMapping(value = "rest/project/{name}", method = RequestMethod.PUT)

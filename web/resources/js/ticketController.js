@@ -6,6 +6,10 @@ function TicketService($resource) {
     return $resource('rest/ticket/:id', {id: '@id'});
 }
 
+function TicketPermService($resource) {
+    return $resource('rest/ticket/:id/permissions?user=:login', {id: '@id', login: '@login'});
+}
+
 function TicketMilestoneService($resource) {
     return $resource('rest/ticket/:id/milestone', {id: '@id'});
 }
@@ -20,6 +24,7 @@ function TicketCommentService($resource) {
 
 function TicketController($http, $scope, $routeParams,
                           TicketService,
+                          TicketPermService,
                           TicketCommentService,
                           TicketMilestoneService,
                           TicketAssigneesService,
@@ -31,6 +36,7 @@ function TicketController($http, $scope, $routeParams,
         return {id: $routeParams.id, login: login};
     }
     this.user = InfoShareService.getUser();
+    this.permissions = TicketPermService.get(url_with_login(this.user.login));
     this.milestone = TicketMilestoneService.get(url());
     this.instance = TicketService.get(url());
     this.assignees = TicketAssigneesService.query(url());
@@ -86,6 +92,7 @@ function TicketController($http, $scope, $routeParams,
 
 app
     .factory('TicketService', TicketService)
+    .factory('TicketPermService', TicketPermService)
     .factory('TicketMilestoneService', TicketMilestoneService)
     .factory('TicketCommentService', TicketCommentService)
     .factory('TicketAssigneesService', TicketAssigneesService)

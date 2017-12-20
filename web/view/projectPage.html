@@ -9,10 +9,10 @@
     <p>Project: {{project.instance.name}}</p>
     <p>Manager: <a ng-href="#/user/{{project.instance.manager.login}}">{{project.instance.manager.name}}</a></p>
     <p>Team leader: <a ng-href="#/user/{{project.instance.teamLeader.login}}">{{project.instance.teamLeader.name}}</a></p>
-    <p>
+    <div ng-show="project.permissions.userManager">
         <input ng-model="teamLeaderLogin">
         <button ng-click="project.setTeamLeader()">Set team leader</button>
-    </p>
+    </div>
 
 
     <div class="row">
@@ -21,18 +21,18 @@
             <div ng-repeat="it in project.developers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                 <p><a ng-href="#/user/{{it.login}}">{{it.name}}</a></p>
             </div>
-            <p>
+            <div ng-show="project.permissions.userManager">
                 <input ng-model="developerLogin">
                 <button ng-click="project.addDeveloper()">Add developer</button>
-            </p>
+            </div>
             <h2>Testers:</h2>
             <div ng-repeat="it in project.testers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                 <p><a ng-href="#/user/{{it.login}}">{{it.name}}</a></p>
             </div>
-            <p>
+            <div ng-show="project.permissions.userManager">
                 <input ng-model="testerLogin">
                 <button ng-click="project.addTester()">Add tester</button>
-            </p>
+            </div>
         </div>
 
         <div class="column equal">
@@ -43,15 +43,19 @@
             </div>
             <p>Start time: <input type="date" ng-model="startTime"></p>
             <p>End time: <input type="date" ng-model="endTime"></p>
-            <p><button ng-click="project.addMilestone()">Add milestone</button></p>
+            <div ng-show="project.permissions.milestoneManager">
+                <button ng-click="project.addMilestone()">Add milestone</button>
+            </div>
 
             <h2>Bug reports:</h2>
             <div ng-repeat="it in project.reports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
                 <p><a ng-href="#/report/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
                 <p>{{it.description}}</p>
             </div>
-            <textarea rows="10" cols="50" ng-model="reportDesc"></textarea>
-            <button ng-click="project.addReport()">Add report</button>
+            <div ng-show="project.permissions.reportCreator">
+                <textarea rows="10" cols="50" ng-model="reportDesc"></textarea>
+                <button ng-click="project.addReport()">Add report</button>
+            </div>
         </div>
     </div>
 

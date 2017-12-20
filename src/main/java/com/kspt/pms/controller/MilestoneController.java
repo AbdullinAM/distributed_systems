@@ -3,6 +3,7 @@ package com.kspt.pms.controller;
 import com.kspt.pms.entity.*;
 import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.logic.Manager;
+import com.kspt.pms.logic.Permissions;
 import com.kspt.pms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,16 @@ public class MilestoneController {
     public Milestone getMilestone(@PathVariable Long id) {
         return milestoneRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Milestone " + id.toString()));
+    }
+
+    @RequestMapping("/rest/milestone/{id}/permissions")
+    public Permissions getPermissions(@PathVariable Long id,
+                                      @RequestParam("user") String login) {
+        Milestone milestone = milestoneRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Milestone " + id.toString()));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        return Permissions.getPermissionsByRole(milestone.getProject().getRoleForUser(user));
     }
 
     @RequestMapping("/rest/milestone/{id}/project")

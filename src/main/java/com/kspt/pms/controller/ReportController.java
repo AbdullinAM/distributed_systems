@@ -6,6 +6,7 @@ import com.kspt.pms.entity.Project;
 import com.kspt.pms.entity.User;
 import com.kspt.pms.exception.NotFoundException;
 import com.kspt.pms.logic.Developer;
+import com.kspt.pms.logic.Permissions;
 import com.kspt.pms.logic.Tester;
 import com.kspt.pms.repository.BugReportRepository;
 import com.kspt.pms.repository.CommentRepository;
@@ -34,6 +35,16 @@ public class ReportController {
     public BugReport getReport(@PathVariable Long id) {
         return bugReportRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Report " + id.toString()));
+    }
+
+    @RequestMapping("/rest/report/{id}/permissions")
+    public Permissions getPermissions(@PathVariable Long id,
+                                      @RequestParam("user") String login) {
+        BugReport report = bugReportRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Report " + id.toString()));
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new NotFoundException(login));
+        return Permissions.getPermissionsByRole(report.getProject().getRoleForUser(user));
     }
 
     @RequestMapping("/rest/report/{id}/project")

@@ -8,13 +8,13 @@ import com.kspt.pms.entity.User;
  */
 public class Permissions {
 
-    private static final Long REPORT_DEVELOPER = 1L << 1;
-    private static final Long REPORT_MANAGER = 1L << 2;
-    private static final Long REPORT_CREATOR = 1L << 3;
-    private static final Long TICKET_DEVELOPER = 1L << 4;
-    private static final Long TICKET_MANAGER = 1L << 5;
-    private static final Long MILESTONE_MANAGER = 1L << 6;
-    private static final Long USER_MANAGER = 1L << 7;
+    private static final Long REPORT_DEVELOPER = 1L << 0;
+    private static final Long REPORT_MANAGER = 1L << 1;
+    private static final Long REPORT_CREATOR = 1L << 2;
+    private static final Long TICKET_DEVELOPER = 1L << 3;
+    private static final Long TICKET_MANAGER = 1L << 4;
+    private static final Long MILESTONE_MANAGER = 1L << 5;
+    private static final Long USER_MANAGER = 1L << 6;
 
     private final Long permissions;
 
@@ -110,6 +110,14 @@ public class Permissions {
 
     public boolean isReportCreator() {
         return (permissions & REPORT_CREATOR) == REPORT_CREATOR;
+    }
+
+    public boolean isTicketCommenter() {
+        return isTicketDeveloper() || isTicketManager();
+    }
+
+    public boolean isReportCommenter() {
+        return isReportCreator() || isReportDeveloper() || isReportManager();
     }
 
     @Override

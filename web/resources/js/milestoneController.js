@@ -6,6 +6,10 @@ function MilestoneService($resource) {
     return $resource('rest/milestone/:id', { id: '@id' });
 }
 
+function MilestonePermService($resource) {
+    return $resource('rest/milestone/:id/permissions?user=:login', {id: '@id', login: '@login'});
+}
+
 function MilestoneProjectService($resource) {
     return $resource('rest/milestone/:id/project', { id: '@id' });
 }
@@ -17,6 +21,7 @@ function MilestoneTicketService($resource) {
 function MilestoneController($routeParams, $scope, $http,
                              InfoShareService,
                              MilestoneService,
+                             MilestonePermService,
                              MilestoneProjectService,
                              MilestoneTicketService) {
     function url() {
@@ -28,6 +33,7 @@ function MilestoneController($routeParams, $scope, $http,
     }
 
     this.user = InfoShareService.getUser();
+    this.permissions = MilestonePermService.get(url_with_login(this.user.login));
     this.project = MilestoneProjectService.get(url());
     this.instance = MilestoneService.get(url());
     this.tickets = MilestoneTicketService.query(url());
@@ -67,6 +73,7 @@ function MilestoneController($routeParams, $scope, $http,
 
 app
     .factory('MilestoneService', MilestoneService)
+    .factory('MilestonePermService', MilestonePermService)
     .factory('MilestoneProjectService', MilestoneProjectService)
     .factory('MilestoneTicketService', MilestoneTicketService)
     .controller('MilestoneController', MilestoneController);

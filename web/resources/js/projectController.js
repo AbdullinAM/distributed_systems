@@ -6,6 +6,10 @@ function ProjectService($resource) {
     return $resource('rest/project/:name?user=:login', {name: '@name', login: '@login'});
 }
 
+function ProjectPermService($resource) {
+    return $resource('rest/project/:name/permissions?user=:login', {name: '@name', login: '@login'});
+}
+
 function ProjectReportService($resource) {
     return $resource('rest/project/:name/reports', {name: '@name'});
 }
@@ -25,6 +29,7 @@ function ProjectTesterService($resource) {
 function ProjectController($scope, $routeParams, $http,
                            InfoShareService,
                            ProjectService,
+                           ProjectPermService,
                            ProjectReportService,
                            ProjectMilestoneService,
                            ProjectDeveloperService,
@@ -37,6 +42,7 @@ function ProjectController($scope, $routeParams, $http,
     };
 
     this.user = InfoShareService.getUser();
+    this.permissions = ProjectPermService.get(url_with_user(this.user.login));
     this.instance = ProjectService.get(url());
     this.reports = ProjectReportService.query(url());
     this.milestones = ProjectMilestoneService.query(url());
@@ -135,6 +141,7 @@ function ProjectController($scope, $routeParams, $http,
 }
 
 app.factory('ProjectService', ProjectService)
+    .factory('ProjectPermService', ProjectPermService)
     .factory('ProjectReportService', ProjectReportService)
     .factory('ProjectMilestoneService', ProjectMilestoneService)
     .factory('ProjectDeveloperService', ProjectDeveloperService)

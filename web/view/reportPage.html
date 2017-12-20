@@ -12,15 +12,21 @@
     <p>Creation date: {{report.instance.creationTime| date: 'dd-MM-yyyy'}}</p>
     <p>Developer: <a ng-href="#/user/{{report.instance.developer.login}}">{{report.instance.developer.name}}</a></p>
 
-    <div>
+    <div ng-show="report.permissions.reportCreator">
         <button ng-click="report.changeStatus('OPENED')">Set opened</button>
+    </div>
+    <div ng-show="report.permissions.reportDeveloper">
         <button ng-click="report.changeStatus('ACCEPTED')">Set accepted</button>
         <button ng-click="report.changeStatus('FIXED')">Set fixed</button>
+    </div>
+    <div ng-show="report.permissions.reportManager">
         <button ng-click="report.changeStatus('CLOSED')">Set closed</button>
     </div>
 
-    <textarea rows="5" cols="50" ng-model="reportComment"></textarea>
-    <button ng-click="report.commentReport()">comment</button>
+    <div ng-show="report.permissions.reportCommenter">
+        <textarea rows="5" cols="50" ng-model="reportComment"></textarea>
+        <button ng-click="report.commentReport()">comment</button>
+    </div>
 
     <h2>Comments:</h2>
     <div ng-repeat="it in (report.comments | orderBy: 'date': true)" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
