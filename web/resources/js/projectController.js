@@ -56,6 +56,7 @@ function ProjectController($scope, $routeParams, $http,
             $http.put('rest/project/' + this.instance.name + '?user=' + this.user.login, $scope.teamLeaderLogin)
                 .then(function () {
                     this.updateInstance();
+                    this.updateDevelopers();
                 }.bind(this), function (error) {
                     alert(error.data.message);
                 });

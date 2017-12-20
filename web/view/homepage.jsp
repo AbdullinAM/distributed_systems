@@ -1,49 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app">
 <head>
+    <link rel='stylesheet' href='resources/css/bootstrap.min.css' type='text/css' media='all'>
     <title>Title</title>
 </head>
-
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-    }
-
-    /* Create two unequal columns that floats next to each other */
-    .column {
-        float: left;
-        padding: 10px;
-        height: 300px; /* Should be removed. Only for demonstration */
-    }
-
-    .left {
-        width: 75%;
-    }
-
-    .right {
-        width: 25%;
-    }
-
-    .equal {
-        width: 50%;
-    }
-
-    /* Clear floats after the columns */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    li {
-        display: inline;
-    }
-</style>
-
 
 <body>
 

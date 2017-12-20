@@ -1,60 +1,74 @@
 <div>
 
-    <ul>
+    <ul class="breadcrumb">
         <li><a ng-href="#/user/{{project.user.login}}">Home</a></li>
         <li><a ng-href="#/login">Log out</a></li>
     </ul>
-
-    <p>Id: {{project.instance.id}}</p>
-    <p>Project: {{project.instance.name}}</p>
-    <p>Manager: <a ng-href="#/user/{{project.instance.manager.login}}">{{project.instance.manager.name}}</a></p>
-    <p>Team leader: <a ng-href="#/user/{{project.instance.teamLeader.login}}">{{project.instance.teamLeader.name}}</a></p>
-    <div ng-show="project.permissions.userManager">
-        <input ng-model="teamLeaderLogin">
-        <button ng-click="project.setTeamLeader()">Set team leader</button>
-    </div>
-
-
     <div class="row">
-        <div class="column equal">
-            <h2>Developers:</h2>
-            <div ng-repeat="it in project.developers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                <p><a ng-href="#/user/{{it.login}}">{{it.name}}</a></p>
-            </div>
+        <div class="col-md-offset-1 col-md-10">
+
+            <h3>Id: {{project.instance.id}}</h3>
+            <h3>Project: {{project.instance.name}}</h3>
+            <h3>Manager: <a ng-href="#/user/{{project.instance.manager.login}}">{{project.instance.manager.name}}</a></h3>
+            <h3>Team leader: <a ng-href="#/user/{{project.instance.teamLeader.login}}">{{project.instance.teamLeader.name}}</a></h3>
             <div ng-show="project.permissions.userManager">
-                <input ng-model="developerLogin">
-                <button ng-click="project.addDeveloper()">Add developer</button>
-            </div>
-            <h2>Testers:</h2>
-            <div ng-repeat="it in project.testers" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                <p><a ng-href="#/user/{{it.login}}">{{it.name}}</a></p>
-            </div>
-            <div ng-show="project.permissions.userManager">
-                <input ng-model="testerLogin">
-                <button ng-click="project.addTester()">Add tester</button>
-            </div>
-        </div>
-
-        <div class="column equal">
-
-            <h2>Milestones:</h2>
-            <div ng-repeat="it in project.milestones" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                <p><a ng-href="#/milestone/{{it.id}}">{{it.id}}</a> : {{it.startingDate | date: 'dd-MM-yyyy'}} - {{it.endingDate | date: 'dd-MM-yyyy'}}</p>
-            </div>
-            <p>Start time: <input type="date" ng-model="startTime"></p>
-            <p>End time: <input type="date" ng-model="endTime"></p>
-            <div ng-show="project.permissions.milestoneManager">
-                <button ng-click="project.addMilestone()">Add milestone</button>
+                <input class="form-control" ng-model="teamLeaderLogin" placeholder="Team leader login">
+                <button class="btn btn-primary" ng-click="project.setTeamLeader()">Set team leader</button>
             </div>
 
-            <h2>Bug reports:</h2>
-            <div ng-repeat="it in project.reports" style="background: #EEE; border: solid; margin: 10px; width: 300px;">
-                <p><a ng-href="#/report/{{it.id}}">{{it.id}}</a> : {{it.status}}</p>
-                <p>{{it.description}}</p>
-            </div>
-            <div ng-show="project.permissions.reportCreator">
-                <textarea rows="10" cols="50" ng-model="reportDesc"></textarea>
-                <button ng-click="project.addReport()">Add report</button>
+
+            <div class="row">
+                <div class="col-md-offset-0 col-md-6">
+                    <h3>Developers:</h3>
+                    <div ng-repeat="it in project.developers">
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading"><a ng-href="#/user/{{it.user.login}}">{{it.name}}</a></h4>
+                        </div>
+                    </div>
+                    <div ng-show="project.permissions.userManager">
+                        <input class="form-control" ng-model="developerLogin" placeholder="Developer login">
+                        <button class="btn btn-primary" ng-click="project.addDeveloper()">Add developer</button>
+                    </div>
+                    <h3>Testers:</h3>
+                    <div ng-repeat="it in project.testers">
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading"><a ng-href="#/user/{{it.user.login}}">{{it.name}}</a></h4>
+                        </div>
+                    </div>
+                    <div ng-show="project.permissions.userManager">
+                        <input class="form-control" ng-model="testerLogin" placeholder="Tester login">
+                        <button class="btn btn-primary" ng-click="project.addTester()">Add tester</button>
+                    </div>
+                </div>
+
+                <div class="col-md-offset-0 col-md-6">
+                    <h2>Milestones:</h2>
+                    <div ng-repeat="it in project.milestones">
+                        <div class="alert alert-info" role="alert">
+                            <h4 class="alert-heading"><a ng-href="#/milestone/{{it.id}}">{{it.id}} : {{it.startingDate | date: 'dd-MM-yyyy'}} - {{it.endingDate | date: 'dd-MM-yyyy'}}</a></h4>
+                            <p>{{it.description}}</p>
+                        </div>
+                    </div>
+                    <div ng-show="project.permissions.milestoneManager">
+                        <h4>Start time</h4>
+                        <input class="form-control" type="date" ng-model="startTime" placeholder="Milestone start">
+                        <h4>End time</h4>
+                        <input class="form-control" type="date" ng-model="endTime" placeholder="Milestone end">
+                        <button class="btn btn-primary" ng-click="project.addMilestone()">Add milestone</button>
+                    </div>
+
+                    <h2>Bug reports:</h2>
+                    <div ng-repeat="it in (project.reports | orderBy: 'creationTime': true)">
+                        <div class="alert alert-info" role="alert">
+                            <h4 class="alert-heading"><a ng-href="#/report/{{it.id}}">{{it.id}} : {{it.status}}</a></h4>
+                            <p>{{it.description}}</p>
+                        </div>
+                    </div>
+                    <div ng-show="project.permissions.reportCreator">
+                        <textarea class="form-control" rows="5" cols="40" ng-model="reportDesc"></textarea>
+                        <button class="btn btn-primary" ng-click="project.addReport()">Add report</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
