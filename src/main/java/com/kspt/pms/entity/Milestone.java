@@ -133,23 +133,10 @@ public class Milestone {
     public boolean isClosed() { return status.equals(MilestoneStatus.CLOSED); }
 
     public void setActive() throws TwoActiveMilestonesException, WrongStatusException {
-        if (isActive()) return;
-        if (!isOpened()) throw new WrongStatusException(getStatus().name(), MilestoneStatus.ACTIVE.name());
-
-        for (Milestone milestone : project.getMilestones()) {
-            if (milestone.isActive()) throw new TwoActiveMilestonesException(milestone.getId(), this.getId());
-        }
-
         status = MilestoneStatus.ACTIVE;
-        activatedDate = new Date();
     }
 
     public void setClosed() throws MilestoneTicketNotClosedException, WrongStatusException {
-        if (isClosed()) return;
-        if (!isActive()) throw new WrongStatusException(getStatus().name(), MilestoneStatus.CLOSED.name());
-        for (Ticket t : tickets)
-            if (!t.isClosed()) throw new MilestoneTicketNotClosedException(t.getId());
-        closedDate = new Date();
         status = MilestoneStatus.CLOSED;
     }
 }

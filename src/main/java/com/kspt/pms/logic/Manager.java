@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Created by kivi on 14.12.17.
  */
-public class Manager implements TicketManager {
+public class Manager implements MilestoneManager, UserManager, TicketManager {
 
     private User user;
     TicketRepository ticketRepository;
@@ -31,86 +31,6 @@ public class Manager implements TicketManager {
         this.ticketRepository = ticketRepository;
         this.commentRepository = commentRepository;
         this.messageRepository = messageRepository;
-    }
-
-    public Milestone createMilestone(Project project, Date start, Date end) throws NoRightsException {
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isMilestoneManager())
-            throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
-
-        Milestone milestone = new Milestone();
-        milestone.setProject(project);
-        milestone.setStartingDate(start);
-        milestone.setEndingDate(end);
-        return milestone;
-    }
-
-    public void activateMilestone(Milestone milestone) throws TwoActiveMilestonesException, WrongStatusException, NoRightsException {
-        Project project = milestone.getProject();
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isMilestoneManager())
-            throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
-        if (milestone.isActive())
-            throw new WrongStatusException("Active", "Active");
-
-        milestone.setActive();
-    }
-
-    public void closeMilestone(Milestone milestone) throws MilestoneTicketNotClosedException, WrongStatusException, NoRightsException {
-        Project project = milestone.getProject();
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isMilestoneManager())
-            throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
-        if (milestone.isClosed())
-            throw new WrongStatusException("Closed", "Closed");
-
-        milestone.setClosed();
-    }
-
-    public void setTeamLeader(Project project, User teamLeader) throws MultipleRoleException, NoRightsException {
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isUserManager())
-            throw new NoRightsException(user, Permissions.getMilestoneManager(), project);
-
-        Role role = project.getRoleForUser(teamLeader);
-        User oldTL = project.getTeamLeader();
-        if (role.equals(Role.NONE)) {
-            project.setTeamLeader(teamLeader);
-            if (oldTL != null) project.addDeveloper(oldTL);
-        } else if (role.equals(Role.DEVELOPER)) {
-            project.addDeveloper(project.getTeamLeader());
-            project.setTeamLeader(teamLeader);
-            project.removeDeveloper(teamLeader);
-            if (oldTL != null) project.addDeveloper(oldTL);
-        } else {
-            throw new MultipleRoleException(teamLeader.getLogin(), role.toString(), project.getName());
-        }
-    }
-
-    public void addDeveloper(Project project, User developer) throws MultipleRoleException, NoRightsException {
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isUserManager())
-            throw new NoRightsException(user, Permissions.getUserManager(), project);
-
-        Role role = project.getRoleForUser(developer);
-        if (role.equals(Role.NONE)) {
-            project.addDeveloper(developer);
-        } else {
-            throw new MultipleRoleException(developer.getLogin(), role.toString(), project.getName());
-        }
-    }
-
-    public void addTester(Project project, User tester) throws MultipleRoleException, NoRightsException {
-        Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(user));
-        if (!permissions.isUserManager())
-            throw new NoRightsException(user, Permissions.getUserManager(), project);
-
-        Role role = project.getRoleForUser(tester);
-        if (role.equals(Role.NONE)) {
-            project.addTester(tester);
-        } else {
-            throw new MultipleRoleException(tester.getLogin(), role.toString(), project.getName());
-        }
     }
 
     @Override
