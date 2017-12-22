@@ -5,9 +5,9 @@ package com.kspt.pms.exception;
  */
 public class IncorrectMilestoneDateException extends PMSException {
 
-    private static final String template = "Can't create milestone with ending date in the past";
+    private static final String template = "Can't create milestone with %s";
 
-    public IncorrectMilestoneDateException() {
-        super(template);
+    public IncorrectMilestoneDateException(String message) {
+        super(String.format(template, message));
     }
 }

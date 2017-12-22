@@ -17,9 +17,10 @@ public interface MilestoneManager extends UserInterface {
         Permissions permissions = Permissions.getPermissionsByRole(project.getRoleForUser(getUser()));
         if (!permissions.isMilestoneManager())
             throw new NoRightsException(getUser(), Permissions.getMilestoneManager(), project);
-        Date current = new Date();
-        if ((new Date()).compareTo(end) < 0)
-            throw new IncorrectMilestoneDateException();
+        if (end.compareTo(start) < 0)
+            throw new IncorrectMilestoneDateException("end date before start date");
+        if (end.compareTo(new Date()) < 0)
+            throw new IncorrectMilestoneDateException("end date in the past");
 
         Milestone milestone = new Milestone();
         milestone.setProject(project);
