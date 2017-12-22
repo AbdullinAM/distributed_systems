@@ -13,7 +13,7 @@
             <h3>Starting date: {{milestone.instance.startingDate | date: 'dd-MM-yyyy'}}</h3>
             <h3>Ending date: {{milestone.instance.endingDate | date: 'dd-MM-yyyy'}}</h3>
             <h3>Activated date: {{milestone.instance.activatedDate | date: 'dd-MM-yyyy'}}</h3>
-            <h3>Closing date: {{milestone.instance.closingDate | date: 'dd-MM-yyyy'}}</h3>
+            <h3>Closing date: {{milestone.instance.closedDate | date: 'dd-MM-yyyy'}}</h3>
 
             <div ng-show="milestone.permissions.milestoneManager">
                 <button class="btn btn-primary" ng-click="milestone.changeStatus('ACTIVE')">Activate</button>

@@ -41,6 +41,7 @@ function ReportController($scope, $http, $routeParams,
         $http.put('rest/report/' + this.instance.id + '?user=' + this.user.login, status)
             .then(function () {
                 this.update();
+                this.updateComments();
             }.bind(this), function (error) {
                 alert(error.data.message);
         });

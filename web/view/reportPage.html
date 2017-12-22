@@ -12,6 +12,7 @@
             <h3>Status: {{report.instance.status}}</h3>
             <h3>Creation date: {{report.instance.creationTime| date: 'dd-MM-yyyy'}}</h3>
             <h3>Developer: <a ng-href="#/user/{{report.instance.developer.login}}">{{report.instance.developer.name}}</a></h3>
+            <h3>Description: {{report.instance.description}}</h3>
 
             <div ng-show="report.permissions.reportCreator">
                 <button class="btn btn-primary" ng-click="report.changeStatus('OPENED')">Set opened</button>
